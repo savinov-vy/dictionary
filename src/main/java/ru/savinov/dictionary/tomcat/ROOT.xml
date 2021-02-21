@@ -1,0 +1,6 @@
+<!--Настройки Tomcat чтобы не нужно было каждый раз билдить проект
+для этого в папке tomcat/conf/Catalina/localhost
+необходимо создать xml файл с именем ROOT.xml и прописать следующие настройки-->
+<Context    path="/"
+            docBase="/home/naglezh/IdeaProjects/MyBlog/src/main/webapp" <!--абсолютный путь к папке webapp-->
+            reloadable="true"/> <!--обозначает что томкат должен автоматически подгружать все изменнения в проекте-->
