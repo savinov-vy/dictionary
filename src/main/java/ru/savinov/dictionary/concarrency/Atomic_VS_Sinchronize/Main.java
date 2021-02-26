@@ -1,14 +1,13 @@
 package ru.savinov.dictionary.concarrency.Atomic_VS_Sinchronize;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         SequenceGeneratorSynchronized sequenceGenerator = new SequenceGeneratorSynchronized();
         SequenceGeneratorAtomic sequenceGeneratorAtomic = new SequenceGeneratorAtomic();
+        System.out.println("Атомики выполняют быстро");
         execute(sequenceGeneratorAtomic, "ATOMIC");
-        Thread.sleep(10000);
+        Thread.sleep(1000);
+        System.out.println("Через синхронизованный блок долго");
         execute(sequenceGenerator, "SYNCH");
     }
 
@@ -17,7 +16,9 @@ public class Main {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println(generatorName + Thread.currentThread().getName() + " " + sequenceGenerator.generate());
+                    System.out.println(generatorName
+                            + Thread.currentThread().getName() +
+                            " " + sequenceGenerator.generate());
                 }
             }).start();
         }

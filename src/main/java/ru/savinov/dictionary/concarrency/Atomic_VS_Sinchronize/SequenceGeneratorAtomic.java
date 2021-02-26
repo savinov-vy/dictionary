@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SequenceGeneratorAtomic implements Generatorable {
     private AtomicInteger number = new AtomicInteger();
 
-    public synchronized int generate() {
+    public int generate() {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
