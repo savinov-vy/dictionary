@@ -24,6 +24,7 @@ sudo apt install mc
 включить Midnight Commander
 mc
 ===========================================
+sudo lsof -i -P -n | grep LISTEN - узнать все используемые порты
 sudo netstat -ltnp | grep -w ':8080' - узнать процесс прослушивающий порт
 tcp6    0      0:: :8080       :::*       LISTEN      878/java
 sudo kill 878
