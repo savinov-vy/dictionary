@@ -1,6 +1,6 @@
-package ru.savinov.tests.package1;
+package ru.savinov.dictionary.theory.ENUM.trainingDebag.package1;
 
-import ru.savinov.tests.Test_debag;
+import ru.savinov.dictionary.theory.ENUM.trainingDebag.Test_debag;
 
 public class Put2 {
     String str = "Превед медвед";
