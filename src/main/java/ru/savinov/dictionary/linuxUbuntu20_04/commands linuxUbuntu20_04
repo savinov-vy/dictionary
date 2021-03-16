@@ -28,3 +28,19 @@ sudo lsof -i -P -n | grep LISTEN - узнать все используемые 
 sudo netstat -ltnp | grep -w ':8080' - узнать процесс прослушивающий порт
 tcp6    0      0:: :8080       :::*       LISTEN      878/java - к примеру выведен следующий процесс
 sudo kill 878
+
+===========================================
+удалить из индексов гид все файлы находящиейся в гит игнор файле
+вариант для linux
+git rm --cached `git ls-files -i --exclude-from=.gitignore`
+
+вариант для windows
+foreach ($i in iex 'git ls-files -i --exclude-from=.gitignore') { git rm --cached $i }
+
+!! После необходимо закрепить добавленные в гитигнор файлы!!
+git commit -m'removed gitignored files'
+
+============================================
+
+
+

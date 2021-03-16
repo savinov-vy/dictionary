@@ -1,0 +1,72 @@
+@Configuration - аннотация для обозначающая, что в этом классе будут создаваться бины из java классов.
+аннотацию @Configuration необходимо использовать для создания бинов например из подключенных библиотек.
+потому что класс из библиотеки не возможно пометить аннотацией сервис или какой либо еще аннотацией.
+Поэтому такие бины конфигурируются в классе конфигурации.
+
+Для создания бина необходимо пометить метод аннотацией @Bean. И спринг сам создаст бин необходимого типа и
+поместит его в IoC контейнер. Бины могут конфигурироваться через конструктор и через сеттеры класса. При этом
+параметры в конструкторе являются обязательными, а сеттеры можно использовать или нет по необходимости.
+
+в скобках после аннотации @Bean указан Id бина. Который можно использовать для аннотации
+@Qualifier("pureJavaConfigService").
+
+аннотация @Qualifier("pureJavaConfigService") используется в качестве указания Спрингу какой бин внедрять
+в поле при нескольких бинах одного типа созданных в IoC Контейнере.
+
+Аннотация @Primary используется для обозначения доминирующего бина при создании бинов одного типа (вместо
+аннотации @Qualifier)
+---------------------------------------------------------------------------------------------------------
+Проект: spring_config_xml_annotation_java_groovy
+@Configuration
+public class JavaConfig {
+    OffsetDateTime offsetDateTime = OffsetDateTime.now();
+
+    @Bean("fullJavaConfigService")
+    public JavaConfigService javaConfigService() {
+        JavaConfigService javaConfigService = new JavaConfigService(offsetDateTime.toString());
+        javaConfigService.setDayOfmonth(offsetDateTime.getDayOfMonth());
+        return javaConfigService;
+    }
+    @Bean("pureJavaConfigService")
+    @Primary //при отсутствии аннотации @Qualifier этому бину будет отдано предпочтение среди бинов одного типа
+    public JavaConfigService javaConfigService1() {
+        JavaConfigService javaConfigService = new JavaConfigService(offsetDateTime.toString());
+        return javaConfigService;
+    }
+}
+------------------------------------------------------------------------------------------------------------
+Проект: spring_config_xml_annotation_java_groovy
+
+@RestController
+public class JavaConfigController {
+
+    private JavaConfigService javaConfigService;
+
+    @Autowired
+    public JavaConfigController(@Qualifier("fullJavaConfigService") JavaConfigService javaConfigService) {
+        this.javaConfigService = javaConfigService;
+    }
+
+    @GetMapping("/java")
+    public String hello() {
+        return javaConfigService.hello();
+    }
+}
+
+==============================================================================================================
+
+@SpringBootApplication - аннотация для точки входа в программу Спринг бут приложения.
+
+@ImportResource("classpath:application-context.xml") - аннотация указывающая место распололожения файла с
+xml конфигурацей.
+
+--------------------------------------------------------------------------------------------------------------
+Проект: spring_config_xml_annotation_java_groovy
+
+@SpringBootApplication
+@ImportResource("classpath:application-context.xml")
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
