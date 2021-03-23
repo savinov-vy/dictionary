@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.theory.ENUM;
+package ru.savinov.dictionary.theoryCore.ENUM;
 // если объект типа WeekDays будет 1 # THURSDAY (остальные дни удалить) то это будет синглтон типа WeedDaysу.
 public enum WeekDays {
     MONDAY(1),

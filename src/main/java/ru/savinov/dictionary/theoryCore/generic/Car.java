@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.theory.generic;
+package ru.savinov.dictionary.theoryCore.generic;
 
 public class Car implements Moveable {
 

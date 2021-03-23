@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.theory.generic;
+package ru.savinov.dictionary.theoryCore.generic;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

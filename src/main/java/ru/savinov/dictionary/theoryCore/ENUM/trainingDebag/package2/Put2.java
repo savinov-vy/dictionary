@@ -1,6 +1,6 @@
-package ru.savinov.dictionary.theory.ENUM.trainingDebag.package2;
+package ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package2;
 
-import ru.savinov.dictionary.theory.ENUM.trainingDebag.Test_debag;
+import ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.Test_debag;
 
 public class Put2 {
     int a = 352;

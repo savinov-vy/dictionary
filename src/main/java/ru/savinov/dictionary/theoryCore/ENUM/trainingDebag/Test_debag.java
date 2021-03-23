@@ -1,7 +1,7 @@
-package ru.savinov.dictionary.theory.ENUM.trainingDebag;
+package ru.savinov.dictionary.theoryCore.ENUM.trainingDebag;
 
-import ru.savinov.dictionary.theory.ENUM.trainingDebag.package1.Put1;
-import ru.savinov.dictionary.theory.ENUM.trainingDebag.package1.Put2;
+import ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package1.Put1;
+import ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package1.Put2;
 
 import java.util.HashMap;
 
@@ -12,9 +12,9 @@ public class Test_debag {
         Put1 put1 = new Put1();
         Put2 put2 = new Put2();
         Put2 put21 = new Put2();
-        ru.savinov.dictionary.theory.ENUM.trainingDebag.package2.Put1 put = new ru.savinov.dictionary.theory.ENUM.trainingDebag.package2.Put1();
-        ru.savinov.dictionary.theory.ENUM.trainingDebag.package2.Put1 put22 = new ru.savinov.dictionary.theory.ENUM.trainingDebag.package2.Put1();
-        ru.savinov.dictionary.theory.ENUM.trainingDebag.package2.Put1 put23 = new ru.savinov.dictionary.theory.ENUM.trainingDebag.package2.Put1();
+        ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package2.Put1 put = new ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package2.Put1();
+        ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package2.Put1 put22 = new ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package2.Put1();
+        ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package2.Put1 put23 = new ru.savinov.dictionary.theoryCore.ENUM.trainingDebag.package2.Put1();
         put21.PutIn();
         put.PutIn();
         put1.PutIn();

@@ -1,0 +1,6 @@
+spring data - абстракция доступа к данным JPA (Java Persistence API)
+в spring data можно использовать hibernate, eclipse-link или другую библиотеку (ORM) реализующую
+JPA интерфейс
+
+JDBC (java data base conector) - интерфейс соединения с базой данных и выполнения SQL запросов
+

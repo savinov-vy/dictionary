@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.theory.ENUM;
+package ru.savinov.dictionary.theoryCore.ENUM;
 
 public class TestWeekDaysENUM {
     public static void main(String[] args) {
