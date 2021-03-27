@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.streamAPI.map;
+package ru.savinov.dictionary.streamAPI.map.wrap;
 
 public class InnerObject {
     private Long id;

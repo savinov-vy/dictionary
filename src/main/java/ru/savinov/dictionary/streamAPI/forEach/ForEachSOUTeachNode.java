@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.streamAPI;
+package ru.savinov.dictionary.streamAPI.forEach;
 
 import java.util.Arrays;
 import java.util.Set;

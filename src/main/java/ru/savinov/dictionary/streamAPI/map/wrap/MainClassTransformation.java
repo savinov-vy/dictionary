@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.streamAPI.map;
+package ru.savinov.dictionary.streamAPI.map.wrap;
 
 import java.util.ArrayList;
 import java.util.List;

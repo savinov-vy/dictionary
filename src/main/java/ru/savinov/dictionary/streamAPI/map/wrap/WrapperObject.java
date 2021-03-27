@@ -1,4 +1,6 @@
-package ru.savinov.dictionary.streamAPI.map;
+package ru.savinov.dictionary.streamAPI.map.wrap;
+
+import ru.savinov.dictionary.streamAPI.map.wrap.InnerObject;
 
 /**
  * This object make from InnerObject

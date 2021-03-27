@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.streamAPI;
+package ru.savinov.dictionary.streamAPI.reduce;
 
 import java.util.Arrays;
 import java.util.Scanner;

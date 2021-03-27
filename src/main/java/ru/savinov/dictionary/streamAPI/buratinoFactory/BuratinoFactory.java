@@ -1,9 +1,10 @@
-package ru.savinov.dictionary.streamAPI.contains;
+package ru.savinov.dictionary.streamAPI.buratinoFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class BuratinoFactory {
@@ -11,20 +12,28 @@ public class BuratinoFactory {
         BuratinoFactory main = new BuratinoFactory();
         List<Buratino> listBuratino = main.createAndFillListBuratino();
         /** отфильтровать всех у кого есть книга*/
-        List<Buratino> books = listBuratino.stream().filter((b) -> b.properties.containsKey("Book")).collect(Collectors.toList());
-
-        /**если есть книга то true*/
+        List<Buratino> books = listBuratino.stream()
+                .filter((b) -> b.properties.containsKey("Book"))
+                .collect(Collectors.toList());
 
         /**есть ли деньги у любого Буратино из списка*/
         boolean has = listBuratino.stream().anyMatch((b -> b.properties.containsKey("Money")));
         System.out.println(has);
 
-
-       // listBuratino.stream().map(Buratino::getProperties("Money"));
+        /**
+         * преобразовать поток Буратино в поток книг
+         */
+        List<Book> bookList = listBuratino.stream().map(new Function<Buratino, Book>() {
+            @Override
+            public Book apply(Buratino buratino) {
+                return (Book) buratino.properties.get("Book");
+            }
+        }).collect(Collectors.toList());
+        System.out.println(bookList);
     }
 
     private List<Buratino> createAndFillListBuratino() {
-        int countBuratino = (int) (Math.random() * 3);
+        int countBuratino = (int) (Math.random() * 100);
         List<Buratino> listBuratino = new ArrayList<>();
         for (int i = 0; i < countBuratino; i++) {
             Buratino buratino = new Buratino();
@@ -49,8 +58,8 @@ public class BuratinoFactory {
             this.name = name;
         }
 
-        public Object getProperties(String key) {
-            return properties.get(key);
+        public Object getProperties() {
+            return properties;
         }
 
         public void setProperties(String key, Object properties) {
