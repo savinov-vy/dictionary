@@ -8,6 +8,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class BuratinoFactory {
+    public BuratinoFactory() {
+    }
+
     public static void main(String[] args) {
         BuratinoFactory main = new BuratinoFactory();
         List<Buratino> listBuratino = main.createAndFillListBuratino();

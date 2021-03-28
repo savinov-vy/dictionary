@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.streamAPI.map.main;
+package ru.savinov.dictionary.streamAPI.map;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

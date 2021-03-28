@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.streamAPI.map.main;
+package ru.savinov.dictionary.streamAPI.map;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,15 +32,18 @@ public class MapForEach {
                 return integer * 10;
             }
         }).forEach(System.out::println);
-        //идентично
+
+
         intList.stream().map(i -> i * 10).forEach(System.out::println);
+        //идентично
         intList.stream().map(i -> i * 10).forEach(n -> System.out.println(n));
         /**
          * У каждого объекта типа стринг вызвать метод length и преобразовать
          * :: запись обозначает что у каждого объекта в потоке этого типа вызвать метод
          */
-        //идентично
+
         strList.stream().map(String::length).forEach(System.out::println);
+        //идентично
         strList.stream().map(s -> s.length()).forEach(System.out::println);
 
     }
