@@ -1,0 +1,54 @@
+для того чтобы создать аннотацию необходимо создать интерфейс
+где поля будующей аннотации прописаны в качестве методов. Параметр RetentionPolicy обозначает как будет
+использоваться эта аннотация:
+- RetentionPolicy.SOURCE обозначает что аннотация будет использоваться на
+исходный код.
+- RetentionPolicy.CLASS обозначает что аннотация будет хранится в скомпилированном class файле
+- RetentionPolicy.RUNTIME
+
+
+-----------------------------------------------------------------------------------------------------------------------
+@Retention(RetentionPolicy.RUNTIME)
+public @interface CalculateCatStrength {
+
+    int minStrenght() default 1;
+
+    int maxStrenght() default 2;
+}
+
+-----------------------------------------------------------------------------------------------------------------------
+Обработка аннотации происходит в BeanPostProcessor (подробнее о BeanPostProcessor в beans lifeCycle) c помощью java reflection api
+BeanFactory пропускает все бины через BeanPostProcessor.
+У каждого бины мы забираем все задекларированные поля и циклом foreach проверяем нет ли над полем созданной аннотации
+если искомая аннотация есть то берем это поле в работу. Если поле private то сначала необходимо получить к нему
+доступ используя метод setAccessible(true).
+
+
+    /** все бины проходят через эти методы.
+     *необходимо вычислить необходимый по наличии аннотации
+     */
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        Field[] decalaredFields = bean.getClass().getDeclaredFields();
+        for (Field field : decalaredFields) {
+            CalculateCatStrength annotation = field.getAnnotation(CalculateCatStrength.class);
+            if (annotation != null) {
+                int minStrenght = annotation.minStrenght();
+                int maxStrenght = annotation.maxStrenght();
+                Random random = new Random();
+                int result = minStrenght + random.nextInt(maxStrenght - minStrenght);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, bean, result);
+            }
+        }
+        return bean;
+    }
+    /**
+     *  между этими медодами срабатывает инит метод бина, аннотированный @PostConstruct
+     */
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
+}
