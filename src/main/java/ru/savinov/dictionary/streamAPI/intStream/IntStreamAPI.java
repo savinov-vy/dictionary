@@ -23,7 +23,7 @@ public class IntStreamAPI {
         int sum = intList.stream().mapToInt(v -> v).sum();
 
         /**
-         * Среднее значение упоковать как Double
+         * Среднее значение упаковать как Double
          */
         double asDouble = intList.stream().mapToInt(v -> v).average().getAsDouble();
 
@@ -34,7 +34,7 @@ public class IntStreamAPI {
 
         /**
         *rangeClosed создает стрим из элементов между двумя числами включительно 2 и 10
-         * */
+         */
         List<Integer> collect1 = IntStream.rangeClosed(2, 10).boxed().collect(Collectors.toList());
         System.out.println(collect1);
         /**
