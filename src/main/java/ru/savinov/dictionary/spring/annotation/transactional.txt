@@ -1,0 +1,92 @@
+@Transactional
+Данная аннотация позволяет сделать методы (например сервисов) транзакционными
+То есть, если у нас в методе происходит несколько операций с базой данных, то мы можем их объединить в одну транзакцию
+с помощью такой аннотации. Аннотация Transactional использует Spring proxy (т.е. дополняет вызов методов выполняемой
+логикой до и после выполнения работы вызываемого метода более подробно описано в проекте annotation_beanPostprocessor
+классе PureTransactionalBeanPostProcessor.)
+
+Spring proxy
+Proxy - это паттерн проектирования. Представляет собой объект, который замещает существующий объект дополняя его
+некоторой логикой.
+В Spring часто используются прокси объектов. Самый популярный механизм с прокси это управление транзакциями с помощью
+spring
+
+
+@Transactional
+Данная аннотация позволяет сделать методы (например сервисов) транзакционными
+То есть, если у нас в методе происходит несколько операций с базой данных, то мы можем их объединить в одну транзакцию
+с помощью такой аннотации.
+
+У аннотации @Transactional есть несколько параметров:
+
+- propagation - определяет поведение транзакций относительно друг друга
+- isolation - позволяет установить уровень изоляции
+- rollBackFor - позволяет установить классы ошибки, при которых будет происходить откат транзакции
+- и некоторые другие
+------------------------------------------------------------------------------------------------------------------------
+propagation есть несколько значений:
+
+REQUIRED - присоединяет действия к текущей транзакции, если текущей нет то создает новую
+REQUIRES_NEW - создает новую транзакцию и приостанавливает текущую, если она есть
+MANDATORY - присоединяется к текущей транзакции, если ее нет - бросает ошибку
+SUPPORTS - присоединяется к текущей транзакции, если ее нет - выполняется не транзакционно
+NEVER - выполняется не транзакционно, если есть транзакция - бросает ошибку
+
+по умолчанию стоит значение REQUIRED
+------------------------------------------------------------------------------------------------------------------------
+propagation = Propagation.REQUIRED (дефолтное значение)
+
+Работать будет следующим образом:
+
+1        @Transactional
+2        public Long createAccount(String name, String email, Integer bill) {
+3               Account account = new Account(name, email, bill);
+4               Account createdAcc = accountRepository.save(account);
+5               saveAccount2()
+6                int a = 1/0; // ошибка выполненно специально чтобы код ниже не выполнился
+7               Account account2 = new Account("Account2", "account2@email.rew", 1000);
+8               accountRepository.save(account2);
+9                return createdAcc.getId();
+10          }
+11
+12       @Transactional
+13       public void saveAccount2(){
+14          Account account3 = new Account("Account3", "email", 4000)
+15              accountRepository.save(account3)
+16        }
+
+метод createAccount() открывает транзакцию перед выполнением в теле createAccount() вызывает saveAccount2(),
+ который так же отмечен аннотацией @Transactional с дефолтным значением propagation = Propagation.REQUIRED
+ таким обраом метод saveAccount2() не открывает новую транзакцию, а присоединяется к существующей.
+ - далее происходит ошибка и оба метода откатываются в исходное состояние (т.к. объединены одной транзакцией).
+-----------------------------------------------------------------------------------------------------------------------
+propagation = Propagation.REQUIRES_NEW
+
+Если необходимо в предыдущем премере разделить транзакции метода createAccount() и saveAccount2() необходимо прописать
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+
+
+1        @Transactional
+2        public Long createAccount(String name, String email, Integer bill) {
+3               Account account = new Account(name, email, bill);
+4               Account createdAcc = accountRepository.save(account);
+5               saveAccount2()
+6                int a = 1/0; // ошибка выполненно специально чтобы код ниже не выполнился
+7               Account account2 = new Account("Account2", "account2@email.rew", 1000);
+8               accountRepository.save(account2);
+9                return createdAcc.getId();
+10          }
+11
+12       @Transactional(propagation = Propagation.REQUIRES_NEW)
+13       public void saveAccount2(){
+14          Account account3 = new Account("Account3", "email", 4000)
+15              accountRepository.save(account3)
+16        }
+
+Работа будет происхдить следующим образом:
+отработают строки 1-4
+при вызове строки 5 Транзакция 1 приостановится - откроется новая транзакция. Выполнится saveAccount2() закроется но-
+вая транзакция и продолжит выполнятся транзакция 1.
+на строке 6 произойдет ошибка и транзакция 1 откатится до исходного значения.
+
+Однако изменения в БД выполненные в строках 12-16 останутся т.к. они выполнились в другой транзакции.
