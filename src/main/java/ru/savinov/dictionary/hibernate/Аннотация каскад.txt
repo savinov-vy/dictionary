@@ -1,0 +1,27 @@
+
+При удалении автора автоматически удалить из базы данных все его книги можно указать аннотацию @Cascade
+
+@Entity
+@Table(name = "authors")
+public class Author {
+
+
+@OneToMany(mappedBy = "author")
+@Cascade(org.hibernate.annotation.CascadeType.DELETE)
+private List<Book> books;
+
+}
+
+Таким же образом можно использовать
+
+CascadeType.DETACH   <- Если автора отвязали от persitent context то и книги отвяжутся
+CascadeType.MERGE   <- Если автора привезали к persitent context то и книги привяжутся
+CascadeType.REFRESH   <- Подтягиваются обнавления автора и книг из базы
+CascadeType.ALL   <- Любая операция на автора влияет на книги
+
+
+
+
+
+
+
