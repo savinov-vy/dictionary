@@ -1,0 +1,26 @@
+Добавим команды RUN этих команд может быть сколько угодно, но так писать нельзя.
+
+FROM postgres:12
+LABEL Author="Savinov Viktor", Version=0.1
+
+RUN postgres -uroot -p$POSTGRES_ROOT_PASSWORD -e "CREATE DATABASE testDatabase"
+
+RUN postgres -uroot -p$POSTGRES_ROOT_PASSWORD -e "CREATE USER 'savinov'@'%' identified by 'savinov';"
+
+RUN postgres -uroot -p$POSTGRES_ROOT_PASSWORD -e "GRANT ALL ON savinov.* TO 'savinov'@'%' IDENTIFIED BY 'savinov'; FLUSH PRIVILEGES"
+-------------------------------------------------------------------------------------------------------------------------
+КОМАНДЫ НУЖНО ОБЪЕДИНИТЬ ПОД ОДНУ КОМАНДУ RUN. и запускать одной комадой используя на КАЖДОЙ строке &&\
+
+FROM postgres:12
+LABEL Author="Savinov Viktor", Version=0.1
+
+RUN service postgres start && \
+    postgres -uroot -p$POSTGRES_ROOT_PASSWORD -e "CREATE DATABASE testDatabase"&&\
+    postgres -uroot -p$POSTGRES_ROOT_PASSWORD -e "CREATE USER savinov WITH PASSWORD 'root'"&&\
+    postgres -uroot -p$POSTGRES_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON testDatabase TO savinov"
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+после запуска этого image docker run -it savinov/postgres
+получается ошибка: не задан пароль для суперюзера
