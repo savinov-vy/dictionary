@@ -1,0 +1,47 @@
+на фронте есть форма
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cat form</title>
+</head>
+<body>
+
+<form th:action="@{/cats}" th:object="${cat}" method="post">
+    <span>id</span>
+    <input th:field = "*{id}" type="hidden">
+    </p>
+    <span>name</span>
+    <input th:field = "*{name}">
+    </p>
+    <span>color</span>
+    <input th:field = "*{color}">
+    </p>
+    <button type="submit">Сохранить</button>
+    <span>E</span>
+</form>
+</body>
+</html>
+
+на Бэкенде есть простейший объект Java Cat и контроллер при запросе на /addcat поля формы придут сразу заполененными
+потому что на фронт проброшен не пустой объект а с уже заполенными полями.
+
+@Controller
+public class FormController {
+    @GetMapping("/addcat")
+    public String showAddCatForm(Model model) {
+        Cat cat = new Cat(1L, "Barsik", "White");
+        model.addAttribute("cat", cat);
+        return "catForm";
+    }
+}
+
+И обратно если поля на форме заполнить и нажать кнопку сохранить с пост запросом на /addcat то объект с обновленными
+полями вернется в бэкенд
+
+    @PostMapping("addcat")
+    public String showAddCatForm(@ModelAttribute(value = "cat") Cat cat) {
+        System.out.println(cat.getId() + " "+cat.getName()+" "+ cat.getColor());
+        return "redirect:/index";
+    }
