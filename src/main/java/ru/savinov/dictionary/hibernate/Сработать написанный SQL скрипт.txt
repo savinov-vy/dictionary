@@ -1,0 +1,18 @@
+
+public static void prepareDate() throws IOException {     // <- нужно обеспечить срабатывание этого метода в main при запуске приложения
+SessionFactory factory = new Configruration()
+            .configure("hibernate.cfg.xml")
+            .buildSessionFactory();
+Session session = null;
+try{
+String sql = Files.lines(Path.get("drop-and-create.sql")).collect(Collectors.joining(" "));   // <- прочитать из файла (лежит в корне resources) строки и разделить пробелом собрать в одну строку
+session.beginTransaction();
+session.createNativeQuery(sql).executeUpdate();                             // <- создать нативный (чистый sql) запрос
+session.getTransaction().commit();
+}finally{
+    factory.close();
+    if(session != null) {
+    session.close();
+    }
+}
+}

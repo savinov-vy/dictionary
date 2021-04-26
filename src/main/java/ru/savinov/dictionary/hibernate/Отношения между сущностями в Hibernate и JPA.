@@ -305,7 +305,7 @@ public class User {
     private String username;
 
     @OneToMany(mappedBy = "user")    <- т.к. в таблице contact нет внешнего ключа тут прописано что в таблице котакты
-    private List<Contact> contacts;          ищи поле которое ссылается на "меня" иначе Hibernate не поймет какую из
+    private List<Contact> contacts;          ищи ПОЛЕ которое ссылается на "меня" иначе Hibernate не поймет какую из
                                              сущностей внедрять в это поле (Там где есть ссылки на этого пользователя,
                                              те контакты и внедрятся в этот список).
 
