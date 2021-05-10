@@ -1,0 +1,9 @@
+метод assert (утверждение)
+assertEquals предназначен для сравнения величины actual с величиной expected
+где expected ожидаемая величина, а actual величина пропускаемая через метод
+
+assertEquals("**  ", stringUtils.chopOff2SpacesAtHead("**  "));
+assertEquals(expected, actual);
+------------------------------------------------------------------------------------------------
+assert проверяет, что метод действительно вернет fals
+assertFalse(stringUtils.chopOff2SpacesAtHead(actual_value));
