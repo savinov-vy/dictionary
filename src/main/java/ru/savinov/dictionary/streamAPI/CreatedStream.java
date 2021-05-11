@@ -24,6 +24,5 @@ public class CreatedStream {
          */
         Arrays.stream(new Integer[] {1,2,5}).findFirst();
 
-
     }
 }
