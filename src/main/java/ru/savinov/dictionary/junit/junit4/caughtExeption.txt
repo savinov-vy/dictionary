@@ -1,0 +1,11 @@
+Тестами можно покрывать вылет ошибки. т.е. если ошибка вылетает тест проходит, если не вылетает то тест
+заваливается для этого в параметры аннотации @Test передаем параметр ожидания ошибки
+
+Пример взят из my_junit -> public class BubbleSortTest
+
+    @Test(expected = NullPointerException.class)
+    public void testBubbleSortArr_OkTestWithExeption() {
+        int [] actual = null; // {2,-17,3,7,10};
+        int [] expected = {-17, 2, 3, 7, 10};
+        assertArrayEquals(expected, BubbleSort.bubbleSortArr(actual));
+    }
