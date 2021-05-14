@@ -1,0 +1,18 @@
+Тесты можно собирать в пакеты. Чтобы не выполнялись все тесты, например если некоторые тесты долгие и
+их нужно выполнять в другое время
+
+для этого нужно прописать
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({BubbleSortTest.class, NewInstanceForEachTest.class, WorkBeforeAndAfterAnnotations.class})
+public class SuiteTests {
+
+}
+
+Таким образом тесты 3-х сортировочных класса собрались в группу
+
+таким же обраом можно собирать в группы классов в группы
+
+@RunWith(value = Suite.class)
+@SuiteClasses(value = {TestSuiteAB.class, TestSuiteCD.class})
+public class MasterTestSuite{}
