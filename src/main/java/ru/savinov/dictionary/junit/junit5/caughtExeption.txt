@@ -1,0 +1,10 @@
+Тестами можно покрывать вылет ошибки. т.е. если ошибка вылетает тест проходит, если не вылетает то тест
+заваливается для этого в junit5 используется метод assertThrows(Exeption.class, () -> method, "message")
+
+Пример взят из my_junit -> public class FruitsBasketTest
+
+    @Test
+    void testRemove_Exeption() {
+        assertThrows(NoSuchElementException.class,
+                () -> fruitsBasket.remove(banana), "Removing a fruit from the basket");
+    }

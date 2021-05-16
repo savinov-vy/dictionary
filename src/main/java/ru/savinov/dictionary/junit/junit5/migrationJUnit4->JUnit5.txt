@@ -1,4 +1,4 @@
-1. Аннотации находится в пакете org.junit.jupiter.api
+1. Аннотации находится в пакете org.junit.jupiter.api Появился util класс assertions
 2. Класс Assertions в пакете org.junit.jupiter.api.Assertions
 3. @Before, @After -> @BeforeEach, AfterEach
 4. @BeforeClass, @AfterClass -> @BeforeAll, @AfterAll
