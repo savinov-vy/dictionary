@@ -1,0 +1,35 @@
+junit 5 позволяет сделать свой runner для инжектирование объектов в методы
+пример из проекта myJunit
+
+
+@ExtendWith(ThingParameterResolver.class)
+public class ThingTest {
+
+    @Test
+    void testAnswer(Thing thing) {
+        assertEquals(42, thing.answer());
+    }
+}
+
+Нужно написать свой раннер
+
+public class ThingParameterResolver implements ParameterResolver {
+    @Override
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return parameterContext.getParameter().getType() == Thing.class;
+    }
+
+    @Override
+    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return new Thing();
+    }
+}
+
+Тестируемый класс
+
+public class Thing {
+
+    public int answer() {
+        return 42;
+    }
+}
