@@ -1,0 +1,9 @@
+Аннотация @Primary используется для обозначения доминирующего бина при создании бинов одного типа (вместо
+аннотации @Qualifier)
+
+    @Bean("pureJavaConfigService")
+    @Primary //при отсутствии аннотации @Qualifier этому бину будет отдано предпочтение среди бинов одного типа
+    public JavaConfigService javaConfigService1() {
+        JavaConfigService javaConfigService = new JavaConfigService(offsetDateTime.toString());
+        return javaConfigService;
+    }

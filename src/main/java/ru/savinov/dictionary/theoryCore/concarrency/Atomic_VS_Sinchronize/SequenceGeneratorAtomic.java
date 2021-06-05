@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.concarrency.Atomic_VS_Sinchronize;
+package ru.savinov.dictionary.theoryCore.concarrency.Atomic_VS_Sinchronize;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,0 +1,15 @@
+Аннотация @Qualifier используется совместно с аннотацией @Autowire для уточнения
+какой бин требуется инжектить в поле.
+
+@Autowired
+@Qualifier ("dog")
+private Pet pet
+
+
+Если аннотация @Qualifier используется с конструктором то используется следующий синтаксис:
+@Qualifier ставится перед параметром конструктора
+
+@Autowired
+public Person(@Qualifier("dog") Pet pet){
+this.pet = pet;
+}
