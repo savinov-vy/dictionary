@@ -1,0 +1,34 @@
+Аннотация @PropertySource служит чтобы вынести строковые константы в отдельный файл проперти
+для этого нужно над конфигурационным классом (отмеченным аннотацией @Configuration)
+поставить аннотацию @PropertySource и в скобках указать путь до файла проперти
+начиная с папки resources. и далее по примеру
+
+проект: rest_springboot_h2
+
+@Configuration
+@PropertySource("classpath:propertiesApp.properties")
+public class Config {
+}
+
+----------------------------------
+
+@RestController
+public class AccountController {
+
+    public final AccountService accountService;
+
+    @Value("${spring.greeting}")
+    private String greeting;                       //<--- переменная куда внедряется строка из .properties
+
+    @Autowired
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @GetMapping("/hello")
+    public String helloSpring() {
+        return greeting;                        //<--- место для использования
+    }
+-----------------------------------
+
+spring.greeting = Hello! How are you doing?
