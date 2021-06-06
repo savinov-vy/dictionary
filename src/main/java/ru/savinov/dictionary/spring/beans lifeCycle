@@ -4,7 +4,7 @@ bean scope - область видимости бинов
 
 IoC контейнер - это HashMap куда spring складывает созданные бины
 
-Существует 5 видов бинов: singleton, prototype, request, session, global-session
+Существует 5 видов scope: singleton, prototype, request, session, global-session
 
 singleton - хранится в IoC контейнере, может находится только в одном экземпляре. По умолчанию у бинов используется
 scope singleton
