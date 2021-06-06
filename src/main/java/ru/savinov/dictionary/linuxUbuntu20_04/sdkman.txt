@@ -1,0 +1,19 @@
+Для замены используемой в системе java машины с использованием sdkman
+ввести команду:
+
+sdk list
+
+если он предложит обновиться - то согласится
+далее если обновление прошло ввести
+
+sdk list java
+
+ответ большая таблица с java версиями в конце используемая версия
+Use tht Identifier for installation:
+$ sdk install java 11.0.3.hs-adpt
+
+для замены выбрать версию java из таблицы из колонки Identifier
+
+и ввести sdk install java versionFromIndentifier
+например
+sdk install java 8.0.292-open

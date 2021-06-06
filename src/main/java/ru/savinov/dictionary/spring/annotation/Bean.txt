@@ -1,0 +1,25 @@
+@Bean аннотация используется при создании бина в ручную при использовании
+java кода. Конфигурационный класс для создания бинов отмечается аннотацией @Configuration.
+Bean id тогда будет название метода.
+
+Аннотация @Bean перехватывает все обращения к бину и регулирует
+его создание:
+Если Scope singleton то такой метод будет вызываться один раз при инициализации IoC контейнера
+Если Scope prototype то метод будет вызываться при каждой инъекции зависимости
+
+@Configuration
+public class MyConfig {
+
+@Bean
+@Scope("singleton")
+public Pet catBean(){
+return new Cat();
+}
+
+@Bean
+public Person personBean(){
+return new Person(catBean());
+}
+
+
+}
