@@ -1,0 +1,65 @@
+Spring AOP использует AspectJ Pointcut expression language.
+
+общее правило написания advice execution:
+
+EXECUTION(modifier-pattern? RETURN-TYPE-PATTERN declaring-type-pattern? METHOD-NAME-PATTERN(PARAMETERS-PATTERN) throws-pattern)
+
+весь пойнткат пишется маленькими буквами. Заглавными буквами описаны обязательные части, а маленькими опциональные части.
+Опциональные части могут быть а могут отсутствовать
+modifier-pattern? - access modifier (# public или другие)
+RETURN-TYPE-PATTERN - return type (# void )
+declaring-type-pattern - конкретный класс в котором находится необходимый метод
+Advice сработает перед любым методом подходящим  под шаблон (pointcut)
+-------------------------------------------
+пример использования с именем класса. Такой point cut сработает только для класса full.path.name.ClassName
+
+@Before("execution (public void full.path.name.ClassName.methodName()")
+public void beforeMethodNameAdvice(){
+System.out.println("beforeMethodNameAdvice try something" )
+}
+========================================================================================================================
+@Before - выполняется до метода с основной логикой
+@AfterReturning - выполняется только после нормального окончания метода с основной логикой
+@AfterThrowing - выполняется после окончания метода с основной логикой только, если было выброшено исключение
+@After - выполняется после окончания метода с основной логикой (т.е. в любом случае нормально завершится метод
+         или будет выброшено исколючение)
+@Around - выполняется до и после метода с основной логикой
+
+========================================================================================================================
+WILD CART для pointcut
+
+execution(public void get*())  <---- имя метода начинается на get...
+
+execution(public * get*())     <---- любой return type и названия метода начинается на get
+
+execution(* getBook())         <---- любой access modifier (не является обязательным паттерном) любой return type
+
+execution (* *())              <---- любой метод без параметров где бы он не находился.
+
+execution (public void getBook(String)) <-- имя параметра писать не нужно только тип параметра
+
+execution (public void * (*))   <---- метод с любым названием и любым одним параметром
+
+execution (public void * (..))  <---- метод с любым названием и любым количеством параметров, без параметров в том числе
+
+execution(public void createNewUser(ru.savinov.spring.shop.entities.User)) <-- метод принимает параметр User
+                                                                               нужно прописать полное имя класса.
+
+execution(public void createNewUser(full.path.User, ..)) <--  один параметра типа User остальные
+                                                                   параметры любые
+========================================================================================================================
+
+Для того, чтобы не пользоваться copy-paste, когда для нескольких Advice-ов подходит один и тот же Pointcut, есть возмож-
+ность объявить данный Pointcut и затем использовать его несколько раз.
+
+@Pointcut("pointcut_expression")
+private void pointcut_reference(){}
+
+чтобы использовать @Pointcut в нескольких местах на него должно чтото ссылаться и на него ссылается
+метод pointcut_reference()
+
+т.е при необходимости использовать этот сохраненный pointcut вместо пойнткат в ковычках пишется название
+метода ссылки на пойнткат
+
+@Before("pointcut_reference()")
+public void advice_name(){ some code }

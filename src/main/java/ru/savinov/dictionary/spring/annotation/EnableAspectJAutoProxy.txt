@@ -1,0 +1,2 @@
+@EnableAspectJAutoProxy аннотация ставится над классом конфигурации приложения (аннотация @Configuration) служит
+для включения Spring AOP
