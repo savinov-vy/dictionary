@@ -1,0 +1,65 @@
+Если необходимо выполнять разное логгирование при выполнении одних и тех же pointcut
+можно сохранять пойткат выражажения (pointcut expression). Это позволит не пользоваться copy-paste, когда для
+нескольких Advice-ов подходит один и тот же Pointcut, есть возможность объявить данный Pointcut и затем использовать
+его несколько раз. Чтобы использовать @Pointcut в нескольких местах на него должно чтото ссылаться и на него ссылается
+метод pointcut_reference() см.#1
+---------------------------------------------------------------------------------------
+Pointcut expression Пример#1
+
+@Pointcut("pointcut_expression")
+private void pointcut_reference(){}
+
+т.е при необходимости использовать этот сохраненный pointcut вместо пойнткат в ковычках пишется название
+метода ссылки на пойнткат
+
+@Before("pointcut_reference()")
+public void advice_name1(){
+1. логика логирования
+}
+
+@After("pointcut_reference()")
+public void advice_name2(){
+2.логика логирования
+}
+
+----------------------------------------------------------------------------------------
+Выражения Pointcut: Объединение
+т.е. если необходимо добавить ещё одну сквозную функциональность на методы то можно объединить
+pointcut используя логические операторы и (&&), или (||), не (!)
+
+Pointcut expression Пример#2
+
+@Pointcut(execution(* aop.UniLibrary.get*())
+private void allGetMethodsFromUniLibrary(){
+}
+
+@Pointcut(execution(* aop.UniLibrary.get*())
+private void allReturnMethodsFromUniLibrary(){
+}
+
+@Pointcut("allReturnMethodsFromUniLibrary() || allGetMethodsFromUniLibrary()")      <---
+private void allGetAndReturnMethodsFromUniLibrary(){                                <--- теперь этот пойнткат можно использовать
+}                                                                                   <---
+------------------------------------------------------------------------------------------
+Выражения Pointcut: Исключение
+исключить один метод класса (для всех методов работает, кроме одного)
+
+Pointcut expression #2
+
+@Pointcut("execution(* aop.UniLibrary.*(..))")    //все методы класса
+private void allMethodsFromUniLibrary(){
+}
+
+@Pointcut("execution(public void aop.UniLibrary.returnMagazine())")  // один метод класса
+private void returnMagazineFromUniLibrary(){
+}
+
+@Pointcut("allMethodsFromUniLibrary() && !returnMagazineFromUniLibrary()")  //Если это любой метод, но не метод returnMagazine()
+private void allMethodsExceptReturnMagazineFromUniLibrary(){
+}
+
+@Before("allMethodsExceptReturnMagazineFromUniLibrary()")
+public void beforeAllMethodsExceptReturnMagazineAdvice(){
+    System.out.println("beforeAllMethodsExceptReturnMagazineAdvice: Log #10"); // выполнить лог 10 для всех методов кроме returnMagazine()
+}
+
