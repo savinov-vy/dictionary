@@ -1,0 +1,12 @@
+
+=================отключить кнопку при нажатии=========================
+кнопки должны быть отмечены классом buttons
+
+var buttons = document.querySelectorAll('.buttons');
+
+for (var i = 0; i<buttons.length; i++){
+buttons[i].addEventListener('click', function(){
+this.disabled = true;
+});
+}
+======================================================================

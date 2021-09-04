@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Каталог</h1>
+<form class="filter" method="get"
+      action="https://kuda.otpravit">
+    <fieldset>
+        <legend>Производители:</legend>
+        <ul>
+            <li>
+                <input type="checkbox" name="baxter-of-california" id="filter-baxter-of-california" checked>  аттрибут checked обозначает по умолчанию выбрано зачекано установлено т.е. галочка стоит
+                <label for="filter-baxter-of-california">Baxter of California</label>
+            </li>
+            <li>
+                <input type="checkbox" name="mr-natty" id="filter-mr-natty">
+                <label for="filter-mr-natty">Mr natty</label>
+            </li>
+            <li>
+                <input type="checkbox" name="suavecito" id="filter-suavecito">
+                <label for="filter-suavecito">Mr natty</label>
+            </li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>
+            <ul>
+                <li>
+                    <input type="radio" name="product-group" value="shaving" id="filter-shave"> <!--name атрибут у checkbox одинаковый потому что они отправляются по или. группа чекбоксов это 1 контрол-->
+                    <label for="filter-shave">Бритвенные принадлежности</label>
+                </li>
+                <li>
+                    <input type="radio" name="product-group" value="hair-care" id="filter-care" checked> <!--у чекбоксов value аттрибут отсутствует потому что там value это да или нет. У радиобаттон нужно различное value-->
+                    <label for="filter-care">Средства для ухода</label>
+                </li>
+                <li>
+                    <input type="radio" name="product-group" value="accessories" id="filter-accessories">
+                    <label for="filter-accessories">Аксессуары</label>
+                </li>
+            </ul>
+        </legend>
+    </fieldset>
+    <button type="submit">Показать</button>
+</form>
+</body>
+</html>

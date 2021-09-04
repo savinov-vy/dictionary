@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Логин</h1>
+<form class="user" method="post"
+      action="https://href/to/backend.ru">
+    <p>
+        <label for="user-login">Логин</label>
+        <input id="user-login" type="text"
+               name="login" placeholder="Логин">
+    </p>
+    <p>
+        <label for="user-password">Пароль</label>
+        <input id="user-password" type="password"
+               name="password" placeholder="Пароль">
+    </p>
+    <p>
+        <label>  <!--обернуть чекбокс тегом lable для того чтобы описание относилось к input у checkbox-->
+            <input type="checkbox" name="remember">
+            Запомните меня
+        </label>
+    </p>
+    <button type="submit">Войти</button> <!--submit отправить форму на бэкенд (это  же значение по умолчанию), если на бэкенд не отправлять то type - button)-->
+</form>
+</body>
+</html>
