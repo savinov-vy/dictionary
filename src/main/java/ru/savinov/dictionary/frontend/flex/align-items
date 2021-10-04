@@ -1,0 +1,44 @@
+выравнивание по вертикали внутри контейнера
+        флекс контейнер (class = flex_example1)
+|-|-------|-|-------|-|-------|--------------------|
+| |       | |       | |       |                    |
+| |       | |       | |       |   |                |
+| |       | |       | |       |   |                |
+| |  1    | |   2   | |   3   |   |  align-items   |
+| |       | |       | |       |   V поперечная.ось |
+| |       | |       | |       |                    |
+| |       | |       | |       |                    |
+|-|-------|-|-------|-|-------|--------------------|
+
+.flex_example1{
+display: flex;
+flex-direction: row;  <---default
+align-items: stetch;  <---default
+align-items: start;
+align-items: end;
+align-items: center;
+align-items: baseline;  <---в ыравнять текст который находится в разных блоках по одной линии
+}
+
+Можно переписать один дочерний блок
+.flex_example2{
+display: flex;
+flex-direction: row;  <---default
+align-items: start;
+}
+
+.flex_example2 div:nth-child(2){
+align-self: center;
+}
+
+
+            флекс контейнер (class = flex_example2)
+|-|-------|-----------|-------|--------------------|
+| |   1   |           |   3   |                    |
+| |-------|           |-------|   |                |
+|           |-------|             |                |
+|           |   2   |             |  align-items   |
+|           |-------|             V поперечная.ось |
+|                                                  |
+|                                                  |
+|--------------------------------------------------|
