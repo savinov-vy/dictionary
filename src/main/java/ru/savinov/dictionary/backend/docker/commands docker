@@ -19,3 +19,5 @@ docker kill --signal=1 my-mongo        - убить контейнер и пер
 docker container prune                 - удалить все остановленные контейнеры
 
 docker rename stoic_rubin mongodb      - переименовать stoic_rubin в mongodb
+
+docker pull nginx                 <--- скачать image образ с репозитория
