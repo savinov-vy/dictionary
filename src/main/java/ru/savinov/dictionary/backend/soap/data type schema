@@ -1,0 +1,27 @@
+типы данных в схемах делятся на 2 большие группы:
+- simple type;
+- complex type;
+
+типы simple type (простых данных):
+Int             12345678                    между Int и Integer разницы нет
+Integer         -123456                     между Int и Integer разницы нет
+Short           1234
+Long            -12345678901234
+Decimal         1.234
+Double          1.2222
+Float           1.2222
+
+string          Образец текста              строка
+Name            George                      имя человека (запись с большой буквы)
+QName           doc:Data                    например пространство имён
+AnyURI          http://www.starpower.com    адрес
+base64Binary    GpM6                        строка в которые предпологается загонять бинарные данные после сериализации base64 (от строки ничем не отличается) байтовый массив (картинка сериализованная например)
+
+Date            2003-05-31
+DateTime        2003-03-31TII:15:00.000-03:00
+Time            11:15:00.000
+
+ID              (XML ID)
+ENTITIES        (XML - cущности)
+ENTITY          (XML-сущность)
+Normal          i zedString
