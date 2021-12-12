@@ -21,3 +21,27 @@ docker container prune                 - удалить все остановл�
 docker rename stoic_rubin mongodb      - переименовать stoic_rubin в mongodb
 
 docker pull nginx                 <--- скачать image образ с репозитория
+
+
+-----------------------------------------------------------------------------
+накатить dump в докер контейнере из windows:
+1. Зайти bash в папке с dump
+2. docker cp ./filedump.sql containername:/tmp/filedump.sql
+3. заходим в bash внутри докер контейнера
+для linux:
+docker exec -it containername bash
+для windows:
+зайти в docker через приложение, открыть консоль CLI всё мы внутри контейнера
+ls
+перейти в место с dump
+su postgres
+psql databasename < filedump.sql
+
+
+полезные команды для накатывания
+su postgres
+psql
+drop database
+create database
+create user username with password 'userpassword'
+alter user username with superuser;
