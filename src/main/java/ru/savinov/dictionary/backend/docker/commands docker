@@ -50,4 +50,8 @@ create user "covidinfo-dbadmin" with password 'MasterData!';
 alter user username with superuser;
 
 -----------------------------------------------------------------------------------------------
+скачать образ и запустить docker container
 docker run --name postgresql -p 5432:5432  -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:10.19-alpine
+
+сделать образ на основе существующего container
+docker commit -m "this comment" current_container_name new_image_name
