@@ -26,10 +26,10 @@ docker pull nginx                 <--- скачать image образ с реп
 -----------------------------------------------------------------------------
 накатить dump в докер контейнере из windows:
 1. Зайти bash в папке с dump
-2. docker cp ./filedump.sql containername:/tmp/filedump.sql
+2. docker cp ./filedump.sql containername:/tmp/filedump.sql (# docker cp ./1.sql postgresql:/tmp/1.sql)
 3. заходим в bash внутри докер контейнера
 для linux:
-docker exec -it containername bash
+docker exec -it containername bash (docker exec -it postgresql bash)
 для windows:
 зайти в docker через приложение, открыть консоль CLI всё мы внутри контейнера
 ls
