@@ -10,3 +10,24 @@ this.disabled = true;
 });
 }
 ======================================================================
+
+=================подтверждение удаления строки========================
+
+<td>
+    <form method="get" th:action="@{/responsible/delete/{id}(id=${r.id})}">
+        <button type="button" class="btn btn-danger btn_delete_responsible">
+        <i class="fas fa-user-times ml-2"></i></button>
+    </form>
+</td>
+
+<script type="text/javascript">
+    let links = document.querySelectorAll('.btn_delete_responsible');
+    for (let i = 0; i<links.length; i++){
+        links[i].addEventListener('click', function confirmDialog() {
+            let result = confirm("Вы уверены?");
+            if (result) {
+                this.form.submit()
+            }
+        });
+    }
+</script>
