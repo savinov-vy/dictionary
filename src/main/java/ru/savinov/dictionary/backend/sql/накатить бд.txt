@@ -1,0 +1,19 @@
+su postgres
+psql databasename < filedump.sql
+
+
+полезные команды для накатывания
+su postgres
+psql
+drop database
+create database
+create user username with password 'userpassword'
+если в имени пользователя есть тире:
+create user "covidinfo-dbadmin" with password 'MasterData!';
+
+alter user username with superuser;
+
+
+Вам просто нужно запустить mysql и скормить его содержимому db.sql :
+
+mysql -u user -p < db.sql
