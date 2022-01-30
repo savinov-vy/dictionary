@@ -23,6 +23,12 @@ docker rename stoic_rubin mongodb      - переименовать stoic_rubin 
 docker pull nginx                 <--- скачать image образ с репозитория
 
 
+docker logs containerName > logsContainer.txt       - логи докер контейнера записать в файл
+
+docker logs containerName | grep "id.*" -A 10           - вывести 10 строк (after) найденного id и любые символы после найденного символа
+docker logs containerName | grep "id.*" -B 10           - вывести 10 строк (before) найденного id и любые символы перед найденного символа
+
+
 -----------------------------------------------------------------------------
 накатить dump в докер контейнере из windows:
 1. Зайти bash в папке с dump
