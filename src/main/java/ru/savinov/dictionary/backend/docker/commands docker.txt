@@ -18,9 +18,17 @@ docker kill --signal=1 my-mongo        - убить контейнер и пер
 
 docker container prune                 - удалить все остановленные контейнеры
 
+docker image rm imageName              - удалить image
+docker image prune                     - удалить images у которыых TAG <none>
+docker tag nginx:latest node:latest    - создать новый image из nginx:latest новый image будет с тегом node:latest
+                                         в случае если image node:latest существует то предыдущий node:latest станет node:<none>
+
+
 docker rename stoic_rubin mongodb      - переименовать stoic_rubin в mongodb
 
 docker pull nginx                 <--- скачать image образ с репозитория
+
+docker exec mongo bash -c 'mongo --version > mongo2.txt'
 
 
 docker logs containerName > logsContainer.txt       - логи докер контейнера записать в файл

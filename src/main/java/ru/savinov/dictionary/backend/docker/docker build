@@ -1,0 +1,1 @@
+docker build -t germes/mysql .                 - сбилдить текущий Dockerfile дать имя репозитория germes/mysql
