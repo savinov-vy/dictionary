@@ -1,5 +1,5 @@
 package ru.savinov.dictionary.backend.regexp;
-
+// reg exp регулрярные выражения
 public class ExampleRegExp {
     public static void main(String[] args) {
         String str = "qwer";

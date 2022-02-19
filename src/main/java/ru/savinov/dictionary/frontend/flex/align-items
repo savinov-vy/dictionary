@@ -17,7 +17,7 @@ align-items: stetch;  <---default
 align-items: start;
 align-items: end;
 align-items: center;
-align-items: baseline;  <---в ыравнять текст который находится в разных блоках по одной линии
+align-items: baseline;  <---выровнять текст который находится в разных блоках по одной линии
 }
 
 Можно переписать один дочерний блок

@@ -1,0 +1,34 @@
+how install java with sdk Man:
+
+sdk list java
+ответ:
+"Java.net      |     | 19.ea.10     | open    |            | 19.ea.10-open
+               |     | 19.ea.9      | open    |            | 19.ea.9-open
+               |     | 19.ea.4.lm   | open    |            | 19.ea.4.lm-open
+               |     | 19.ea.3.lm   | open    |            | 19.ea.3.lm-open
+               |     | 19.ea.1.pma  | open    |            | 19.ea.1.pma-open
+               |     | 18           | open    |            | 18-open
+               |     | 18.ea.35     | open    |            | 18.ea.35-open
+               |     | 17.0.2       | open    |            | 17.0.2-open
+               |     | 11.0.12      | open    |            | 11.0.12-open
+               |     | 11.0.11      | open    |            | 11.0.11-open
+"
+
+ввести команду использовать jdk нужной версии
+sdk use java 11.0.10-open
+
+Если версия не установлена то выведется сообщение:
+" Stop! Candidate version is not installed.
+
+Tip: Run the following to install this version
+
+$ sdk install java 11.0.10-open "
+
+ввести рекомендуемую команду
+sdk install java 11.0.10-open
+
+установится нужная версия java
+ввести команду что нужно использовать эту версию
+sdk use java 11.0.10-open
+ответ:
+"Using java version 11.0.10-open in this shell."
