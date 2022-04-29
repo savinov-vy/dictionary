@@ -73,7 +73,7 @@ docker commit -m "this comment" current_container_name new_image_name
 
 ---------------------------------------------------------------------------------------------
 выгрузить докер образы из image в tar архив:
-docker save -o shop_shop:latest confluentinc/cp-kafka:latest confluentinc/cp-zookeeper:latest postgres:12-alpine
+docker save -o shop_images.tar shop_shop:latest confluentinc/cp-kafka:latest confluentinc/cp-zookeeper:latest postgres:12-alpine
 
 загрузка в докер среду производится обратной операцией
-docker load -i ubuntu-16+18.tar
+docker load -i shop_images.tar
