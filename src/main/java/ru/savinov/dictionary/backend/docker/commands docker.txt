@@ -1,26 +1,27 @@
 ================================== Основные команды докер ============================================
-какие контейнеры у нас запущены:
-docker ps
 
-все существующие докер контейнеры включая остановленные:
-$ docker ps -a
 
-удалить контейнер
-docker rm
+работа с контейнерами
+-------------------------------
+$ docker rm                              - удалить контейнер
+$ docker container prune                 - удалить все остановленные контейнеры
 
-остановить контейнер:
-docker stop
-docker kill
+$ docker ps                              - какие контейнеры запущены
 
-docker run --name my-mongo -d mongo    - запустить контейнер по имени my-mongo отвязать от текущей сессии detached
+$ docker ps -a                           - все существующие докер контейнеры включая остановленные
 
-docker kill --signal=1 my-mongo        - убить контейнер и передать при этом сигнал
+$ docker stop                            - остановить контейнер
+$ docker kill
 
-docker container prune                 - удалить все остановленные контейнеры
+$ docker run --name my-mongo -d mongo    - запустить контейнер по имени my-mongo отвязать от текущей сессии detached
 
-docker image rm imageName              - удалить image
-docker image prune                     - удалить images у которыых TAG <none>
-docker tag nginx:latest node:latest    - создать новый image из nginx:latest новый image будет с тегом node:latest
+$ docker kill --signal=1 my-mongo        - убить контейнер и передать при этом сигнал (сигнал можно как то обработать в приложении)
+
+$ docker container prune                 - удалить все остановленные контейнеры
+
+$ docker image rm imageName              - удалить image
+$ docker image prune                     - удалить images у которыых TAG <none>
+$ docker tag nginx:latest node:latest    - создать новый image из nginx:latest новый image будет с тегом node:latest
                                          в случае если image node:latest существует то предыдущий node:latest станет node:<none>
 
 
@@ -69,3 +70,10 @@ docker run --name postgresql -p 5432:5432  -e POSTGRES_USER=postgres -e POSTGRES
 
 сделать образ на основе существующего container
 docker commit -m "this comment" current_container_name new_image_name
+
+---------------------------------------------------------------------------------------------
+выгрузить докер образы из image в tar архив:
+docker save -o shop_shop:latest confluentinc/cp-kafka:latest confluentinc/cp-zookeeper:latest postgres:12-alpine
+
+загрузка в докер среду производится обратной операцией
+docker load -i ubuntu-16+18.tar
