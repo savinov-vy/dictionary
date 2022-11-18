@@ -15,5 +15,4 @@ public class MapConstructor {
         Stream.of("Bob", "Bill", "Mary").map(n -> new User(n)).collect(Collectors.toList());
         Stream.of("Bob", "Bill", "Mary").map(User::new).collect(Collectors.toList());
     }
-
 }
