@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.backend.patterns.observer.characters;
+package ru.savinov.dictionary.backend.patterns.strategy.characters;
 
 public class Queen extends Character {
     @Override

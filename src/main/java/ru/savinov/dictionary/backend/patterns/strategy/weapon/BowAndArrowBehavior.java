@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.backend.patterns.observer.weapon;
+package ru.savinov.dictionary.backend.patterns.strategy.weapon;
 
 public class BowAndArrowBehavior implements WeaponBehavior {
     @Override
