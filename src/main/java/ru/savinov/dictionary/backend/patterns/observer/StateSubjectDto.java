@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.backend.patterns.observer.custom;
+package ru.savinov.dictionary.backend.patterns.observer;
 
 public class StateSubjectDto {
     private final Integer countSomething;

@@ -1,7 +1,7 @@
-package ru.savinov.dictionary.backend.patterns.observer.custom.observers;
+package ru.savinov.dictionary.backend.patterns.observer.observers;
 
-import ru.savinov.dictionary.backend.patterns.observer.custom.StateSubjectDto;
-import ru.savinov.dictionary.backend.patterns.observer.custom.subjects.Subject;
+import ru.savinov.dictionary.backend.patterns.observer.StateSubjectDto;
+import ru.savinov.dictionary.backend.patterns.observer.subjects.Subject;
 
 public class ObserverImpl implements Observer, Display {
     Subject subject;

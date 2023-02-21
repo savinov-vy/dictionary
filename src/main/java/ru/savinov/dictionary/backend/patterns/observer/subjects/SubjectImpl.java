@@ -1,7 +1,7 @@
-package ru.savinov.dictionary.backend.patterns.observer.custom.subjects;
+package ru.savinov.dictionary.backend.patterns.observer.subjects;
 
-import ru.savinov.dictionary.backend.patterns.observer.custom.StateSubjectDto;
-import ru.savinov.dictionary.backend.patterns.observer.custom.observers.Observer;
+import ru.savinov.dictionary.backend.patterns.observer.StateSubjectDto;
+import ru.savinov.dictionary.backend.patterns.observer.observers.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
