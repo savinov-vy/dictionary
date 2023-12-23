@@ -19,6 +19,9 @@ $ docker kill --signal=1 my-mongo        - убить контейнер и пе
 
 $ docker container prune                 - удалить все остановленные контейнеры
 
+работа с образами
+-----------------------------------
+
 $ docker image rm imageName              - удалить image
 $ docker image prune                     - удалить images у которыых TAG <none>
 $ docker tag nginx:latest node:latest    - создать новый image из nginx:latest новый image будет с тегом node:latest
