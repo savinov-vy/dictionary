@@ -2,12 +2,17 @@ package ru.savinov.dictionary.backend.algorithms.strings;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class CounterChars {
     public static void main(String[] args) {
-        String str = "anyString";
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        if (str.isEmpty()) {
+            System.out.println("String is empty");
+            return;
+        }
         char[] chars = str.toCharArray();
-        System.out.println(chars);
         Map<Character, Integer> counterCh = new HashMap<>();
         Character maxRepeat = null;
         int amountRepeat = 0;
