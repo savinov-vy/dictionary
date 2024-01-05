@@ -5,6 +5,10 @@ import java.util.Arrays;
 
 import static java.util.Objects.isNull;
 
+/**
+ * дана последовательность чисел больше 2х, вывести на экран 2 максимальных числа этой последовательности
+ * причем второе максимальное число получается путём вычёркивания одного максимального числа
+ */
 public class FindTwoMaxNumber {
     public static void main(String[] args) {
         String nums = "-1 -9 -5 -3 -1 -2";
@@ -14,13 +18,6 @@ public class FindTwoMaxNumber {
             Integer[] ints = toArrayNum(nums);
             printTwoMaxNumber(ints);
         }
-    }
-
-    private static Integer[] toArrayNum(String nums) {
-        String[] s = nums.split(" ");
-        return Arrays.stream(s)
-                .map(Integer::valueOf)
-                .toArray(Integer[]::new);
     }
 
     private static void printTwoMaxNumber(Integer[] ints) {
@@ -36,5 +33,12 @@ public class FindTwoMaxNumber {
             }
         }
         System.out.println(max1 + " " + max2);
+    }
+
+    private static Integer[] toArrayNum(String nums) {
+        String[] s = nums.split(" ");
+        return Arrays.stream(s)
+                .map(Integer::valueOf)
+                .toArray(Integer[]::new);
     }
 }
