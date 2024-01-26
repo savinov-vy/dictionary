@@ -5,7 +5,8 @@ import java.util.Arrays;
 public class Quick_sort_hoara {
 
     public static void main(String[] args) {
-        int[] x = {5,13,1,31,25,17,3,11,14,7,19,20,2,32,9,16,22,28,15,21,10,27,4,6,26,18,8,29,12,24,30,23};
+//        int[] x = {5,13,1,31,25,17,3,11,14,7,19,20,2,32,9,16,22,28,15,21,10,27,4,6,26,18,8,29,12,24,30,23};
+        int[] x = {1,4,3,0,5,6,2};
         System.out.println("Было");
         System.out.println(Arrays.toString(x));
 
