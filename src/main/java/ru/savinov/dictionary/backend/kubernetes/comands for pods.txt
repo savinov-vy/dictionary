@@ -1,0 +1,64 @@
+https://kubernetes.io/
+
+запуск minikube с различными VM
+https://minikube.sigs.k8s.io/docs/drivers/
+minikube start --vm-driver=<driver_name>
+например minikube inikube start --vm-driver=hiperv
+
+----------
+
+информация о кластере
+kubectl cluster-info
+
+----------
+alias для команды kubectl
+
+alias k=kubectl
+
+при закрытии терминала и открытии его алиас нужно создать заново
+----------
+информация о количестве и статусе nods в кластере
+kubectl get nodes
+
+----------
+информация о подах в кластере
+kubectl get pods
+
+----------
+информация о существующих пространствах имён
+kubectl get namespaces
+----------
+информация о подах в пространствах имён
+kubectl get pods <- в пространстве имён по умолчанию
+kubectl get pods --namespace=<NAME NAMESPACES>
+НАПРИМЕР
+kubectl get pods --namespace=kube-system
+----------
+создать pod с именем my-nginx-pod внутри использовать контейнер nginx
+рекомендуется внутри одного пода использовать один контейнер, чтобы
+в случае остановке пода можно было его полностью пересоздать не затрагивая рабочие контейнеры
+kubectl run my-nginx-pod --image=nginx
+
+-----------
+описание пода
+kubectl describe pod <name pod>
+#
+kubectl describe pod my-nginx-pod
+
+-----------
+войти внуть контейнера докер используя оболочку sh
+f932098cd8b1 - это id контейнера
+docker exec -it f932098cd8b1 sh
+
+hostname -I <- IP адрес внутри конейнера (должен совпадать с IP адресом пода)
+
+-----------
+kubectl get pods -o wide <- инфа о подах кластера и их IP адресах
+
+-----------
+создать pod с именем my-nginx-pod и контейнером nginx внутри
+kubectl run my-nginx-pod --image=nginx
+-----------
+удалить pod
+kubectl delete pod my-nginx-pod
+----------
