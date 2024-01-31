@@ -1,0 +1,19 @@
+показать существующие сервисы
+kubectl get services
+
+сокращенная команда
+kubectl get svc
+
+--------------
+создать сервис типа ClusterIP в деплойменте my-nginx-deploy
+kubectl expose deploy my-nginx-deploy --port=8085 --target-port=80
+
+сервис будет слушать порт 8085 снаружи и пробрасывать на порт 80
+80 - порт на котором по умолчаанию работает nginx
+тип созданного деплоймента: ClusterIP
+такой тип подходит для взаимодействия между разными деплойментами
+---------------
+удалить сервис
+kubectl delete svc my-nginx-deploy
+---------------
+kubectl expose deploy my-nginx-deploy --type=NodePort --port=8888 --target-port=80
