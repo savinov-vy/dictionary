@@ -1,0 +1,21 @@
+создать deployment
+
+kubectl create deployment my-nginx-deploy --image=nginx
+
+my-nginx-deploy - название деплоймента
+--image=nginx - у всех подов в деплойдентме будет одинаковый образ
+
+----------
+детали deployment
+
+kubectl describe deployment my-nginx-deploy
+kubectl describe deploy my-nginx-deploy
+
+----------
+увеличить (или уменьшить) количество подов в деплойменте до 3х
+kubectl scale deploy my-nginx-deploy --replicas=3
+
+проверить
+kubectl get pod
+
+
