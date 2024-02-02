@@ -1,0 +1,23 @@
+добававить текущий проект к удалённому репозиторию
+git remote add origin https://github.com/savinov-vy/gitCommans.git
+
+вывести список удалённых репозиториев
+git remote -v
+
+git 
+
+git push -u origin main
+
+git push НАЗВАНИЕ_УДАЛЁННОГО_РЕПОЗИТОРИЯ ВЕТКА
+
+# git push origin master
+
+
+git pull origin master вытянуть из репозитория
+
+
+
+================
+проверить наличие ssh ключей
+ls -al ~/.ssh
+
