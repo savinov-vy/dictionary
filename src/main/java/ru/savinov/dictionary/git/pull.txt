@@ -1,0 +1,6 @@
+актуализировать любую ветку
+
+git pull origin <називание ветки>
+
+git pull = 1. git fetch
+         = 2. git merge

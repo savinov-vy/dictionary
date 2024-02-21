@@ -1,5 +1,6 @@
 package ru.savinov.dictionary.backend.algorithms;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FibonacciLastNumber {

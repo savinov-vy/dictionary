@@ -1,0 +1,36 @@
+посмотреть какие ветки существуют локально
+на какой ветке находится указатель HEAD
+
+git branch
+
+-------------
+посмотреть какие ветки существуют удалённо
+
+git branch -r
+
+-------------
+добавить ветку
+git branch name-new-branch
+
+-------------
+удалить ветку
+git branch -d some-feature
+
+удалена ветка some-feature
+
+-------------
+
+переключение между ветками
+
+git checkout some-feature
+
+
+-------------
+
+слить ветку add-feature1
+
+перейти на ветку мастер
+слить ветку add-feature1 с веткой мастер
+
+git checkout master
+git merge add-feature1

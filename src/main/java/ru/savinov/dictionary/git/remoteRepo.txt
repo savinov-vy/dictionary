@@ -4,9 +4,7 @@ git remote add origin https://github.com/savinov-vy/gitCommans.git
 вывести список удалённых репозиториев
 git remote -v
 
-git 
-
-git push -u origin main
+git push -u origin master
 
 git push НАЗВАНИЕ_УДАЛЁННОГО_РЕПОЗИТОРИЯ ВЕТКА
 
@@ -15,7 +13,9 @@ git push НАЗВАНИЕ_УДАЛЁННОГО_РЕПОЗИТОРИЯ ВЕТКА
 
 git pull origin master вытянуть из репозитория
 
-
+================
+удалить ветку с гитхаба
+git push --delete origin add-feature1
 
 ================
 проверить наличие ssh ключей
