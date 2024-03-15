@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.backend.algorithms;
+package ru.savinov.dictionary.backend.algorithms.roadmap;
 
 import java.util.HashSet;
 import java.util.Set;
