@@ -1,4 +1,4 @@
-version: '2.4'
+version: '3.7'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.9
@@ -8,6 +8,8 @@ services:
       interval: 10s
       timeout: 1s
       retries: 30
+    networks:
+      - kafkaNetwork
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -18,13 +20,14 @@ services:
     image: confluentinc/cp-kafka:7.0.9
     container_name: kafka
     depends_on:
-      zookeeper:
-        condition: service_healthy
+      - zookeeper
     healthcheck:
       test: "test $$( /usr/bin/zookeeper-shell zookeeper:2181 get /brokers/ids/1 | grep { ) != ''"
       interval: 3s
       timeout: 2s
       retries: 300
+    networks:
+      - kafkaNetwork
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -36,20 +39,21 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     ports:
-      - "9191:9191"
-      - "9091:9091"
+      - "9197:9191"
+      - "9097:9091"
 
   kafka2:
     image: confluentinc/cp-kafka:7.0.9
     container_name: kafka2
     depends_on:
-      zookeeper:
-        condition: service_healthy
+      - zookeeper
     healthcheck:
       test: "test $$( /usr/bin/zookeeper-shell zookeeper:2181 get /brokers/ids/1 | grep { ) != ''"
       interval: 3s
       timeout: 2s
       retries: 300
+    networks:
+      - kafkaNetwork
     environment:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -61,19 +65,20 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     ports:
-      - "9192:9192"
-      - "9092:9092"
+      - "9198:9192"
+      - "9098:9092"
   kafka3:
     image: confluentinc/cp-kafka:7.0.9
     container_name: kafka3
     depends_on:
-      zookeeper:
-        condition: service_healthy
+      - zookeeper
     healthcheck:
       test: "test $$( /usr/bin/zookeeper-shell zookeeper:2181 get /brokers/ids/1 | grep { ) != ''"
       interval: 3s
       timeout: 2s
       retries: 300
+    networks:
+      - kafkaNetwork
     environment:
       KAFKA_BROKER_ID: 3
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -91,13 +96,14 @@ services:
     image: confluentinc/cp-kafka:7.0.9
     container_name: kafka4
     depends_on:
-      zookeeper:
-        condition: service_healthy
+      - zookeeper
     healthcheck:
       test: "test $$( /usr/bin/zookeeper-shell zookeeper:2181 get /brokers/ids/1 | grep { ) != ''"
       interval: 3s
       timeout: 2s
       retries: 300
+    networks:
+      - kafkaNetwork
     environment:
       KAFKA_BROKER_ID: 4
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -116,13 +122,14 @@ services:
     image: confluentinc/cp-kafka:7.0.9
     container_name: kafka5
     depends_on:
-      zookeeper:
-        condition: service_healthy
+      - zookeeper
     healthcheck:
       test: "test $$( /usr/bin/zookeeper-shell zookeeper:2181 get /brokers/ids/1 | grep { ) != ''"
       interval: 3s
       timeout: 2s
       retries: 300
+    networks:
+      - kafkaNetwork
     environment:
       KAFKA_BROKER_ID: 5
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -143,8 +150,14 @@ services:
     restart: "no"
     ports:
       - "9000:9000"
+    networks:
+      - kafkaNetwork
     environment:
       KAFKA_BROKERCONNECT: "kafka1:9191"
       JVM_OPTS: "-XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
     depends_on:
       - "kafka1"
+
+networks:
+  kafkaNetwork:
+    driver: bridge
