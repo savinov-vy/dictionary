@@ -1,0 +1,12 @@
+Consumer groups
+для каждой consumer group, которая читает топик выделяется
+    Group coordinator - один из брокеров кафки назначает себя координатором группы
+                        consumer-ов и отвечает за состав группы и живость членов группы
+                        назначает из группы случайным образом consumer-ов - group leader
+
+    Group leader - один из consumer-ов в группе, назначается случайным образом group coordinator-ом,
+                        и потом group leader распределяет consumer-ов по партициям
+
+Group coordinator  и  Group leader определяют распределение consumers по partitions
+разработчики могут влиять на распределение consumers по partitions через настройки group leader (если это требуется, а
+распределение по умолчанию не устраивает, например какое нибудь шардирование)
