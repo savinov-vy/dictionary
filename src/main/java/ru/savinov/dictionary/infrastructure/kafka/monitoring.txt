@@ -1,0 +1,4 @@
+docks.confluent.io/platform/current/installation/docker/operations/monitoring.html
+otus: kafka, lesson 5 28:00 min
+
+prometeus + grafana  otus: kafka, lesson 5 40:36 min

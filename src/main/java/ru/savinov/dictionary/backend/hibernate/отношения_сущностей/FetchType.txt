@@ -1,0 +1,31 @@
+Fetch Type - Eager
+значение по умолчанию для одиночных сущностей
+означает, что сущность поля будет вытянута из БД одновременно с сущностью в которой это поле расположено
+
+@Data
+@Entity
+@NoArgConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)              <- unique только для симантики или при автоматической генерации сущностей
+    private String username;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)         <- будет вытянуто одновременно с User
+    @JoinColumn(name = "company_id")    <- обозначает ту колонку которая является внешним ключом из текущей сущности, по умолчанию берётся название сущности и добавляется _id (т.е. работать будет и без указания JoinColumn). SQL не чувствителен к регистру и Company_id == company_id
+    private Company company;
+
+}
+optional = false - вытягивать через join
+optional = true - вытягивать через left join
+join предпочтительней с точки производительности (но необходимо чтобы поле было not null)
+left join  если существуют null значения (иначе сущность user не будет вытягиваться из бд, там где company_id - null)
+
+@ManyToOne(optional = false, fetch = FetchType.LAZY - поле не будет вытянуто
+hibernate подложит вместо поля proxy объект. с полями равными null
+и поля будут вытянуты только при обращении к ним в данной сессии и транзакции
+(это особенность этого proxy объекта)
+

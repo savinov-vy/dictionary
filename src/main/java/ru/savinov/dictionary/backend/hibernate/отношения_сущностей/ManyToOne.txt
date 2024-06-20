@@ -1,0 +1,32 @@
+@ManyToOne
+аннотация показывает связь многие к одному. Например многие пользователи работают в одном предприятии
+
+@Data
+@Entity
+@NoArgConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)              <- unique только для симантики или при автоматической генерации сущностей
+    private String username;
+
+    @ManyToOne(optional = false)         <- каким образом присоединять company через left join или через join #
+    @JoinColumn(name = "company_id")    <- обозначает ту колонку которая является внешним ключом из текущей сущности, по умолчанию берётся название сущности и добавляется _id (т.е. работать будет и без указания JoinColumn). SQL не чувствителен к регистру и Company_id == company_id
+    private Company company;
+
+
+}
+--------------------
+чтобы сохранить User в БД в таком виде придётся:
+ для начала сохранить company в БД
+- company получит Id
+- User сохранится в БД
+--------------------
+ optional = false - это вытягивать через join применяется в случае company_id is not null.
+ тогда company id гарантированно существует и тогда можно применять join, a join имеет лучшую производительность
+ по сравнению с left join
+
+ по умолчанию optional = true и применяется left join (чтобы не терять из запросов тех пользователей, компания которых отсутствует)

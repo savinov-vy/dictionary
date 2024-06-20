@@ -31,6 +31,11 @@ $ docker tag nginx:latest node:latest    - создать новый image из 
 docker rename stoic_rubin mongodb      - переименовать stoic_rubin в mongodb
 
 docker pull nginx                 <--- скачать image образ с репозитория
+полная команда docker pull <registry>/<repository>/<name>:<tag>
+# docker pull 192.168.0.1:5000/myrepo/ubuntu:latest
+если не указывается docker registry (хост и порт) то по умолчанию docker hub
+если не указывается repository то по умолчанию docker repository
+
 
 docker exec mongo bash -c 'mongo --version > mongo2.txt'
 
