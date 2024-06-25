@@ -17,7 +17,8 @@ public class User {
     @JoinColumn(name = "company_id")    <- обозначает ту колонку которая является внешним ключом из текущей сущности, по умолчанию берётся название сущности и добавляется _id (т.е. работать будет и без указания JoinColumn). SQL не чувствителен к регистру и Company_id == company_id
     private Company company;
 
-
+optional = false значит сущность company действительно есть в БД, если её нет то нет и User
+аналогично user u join company c on u.company_id = c.id
 }
 --------------------
 чтобы сохранить User в БД в таком виде придётся:
@@ -30,3 +31,16 @@ public class User {
  по сравнению с left join
 
  по умолчанию optional = true и применяется left join (чтобы не терять из запросов тех пользователей, компания которых отсутствует)
+
+
+     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.PERSIST})     Тo как следует удалять или сохранять сущность вместе с USER
+     @JoinColumn(name = "company_id")
+     private Company company;
+
+     главной сущностью является Company, а сущность User зависит от компании.
+
+     для того чтобы сохранить одновременно сущность Company и сущность User необходимо
+     установить CascadeType.ALL тогда Hibernate cначала сохранит Company таким образом получит company_id
+     и затем сохранить User и вставит в таблицу users внешний ключ company_id
+
+

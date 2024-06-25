@@ -16,7 +16,7 @@ private List<Book> books;
 
 CascadeType.DETACH   <- Если автора отвязали от persitent context то и книги отвяжутся
 CascadeType.MERGE   <- Если автора привезали к persitent context то и книги привяжутся
-CascadeType.REFRESH   <- Подтягиваются обнавления автора и книг из базы
+CascadeType.REFRESH   <- Подтягиваются обновления автора и книг из базы
 CascadeType.ALL   <- Любая операция на автора влияет на книги
 
 

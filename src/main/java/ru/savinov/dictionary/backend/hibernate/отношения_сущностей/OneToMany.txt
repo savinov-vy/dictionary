@@ -1,0 +1,60 @@
+@OneToMany
+аннотация показывает связь многие к одному. в одном предприятии работают многие пользователи
+
+@Entity
+public class Company {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String name;
+
+    @OneToMany(mappedBy = "company")    <- при bidirectional связи необходимо указать названия поля хранителя связи
+   // @JoinColumn(name = "company_id")    <- при unidirectional связи ставится эта аннотация (но из сущности User нужно будет убрать эту аннотацию)
+    private List<User> users            <- List не использует Equals and HashCode поэтому проблем нет*
+
+}
+* однако если заменить List на Set то получится циклическая зависимость сущность Company
+при вычислении HashCode будет вычислять Хеш user, A user будет вычислять хеш company
+и так по кругу - это будет приводить к переполнению стека. Нужно исключить из Хеш коллекцию, пользователей
+так как эта коллекция пользователей не является частью компании. Это пользователь зависит от компании. Ну или
+хорошо подумать где не нужен hash. И по каким полям сравнение не обязательно
+
+
+@Data
+@Entity
+@NoArgConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)              <- unique только для симантики или при автоматической генерации сущностей
+    private String username;
+
+    @ManyToOne(optional = false)         <- каким образом присоединять company через left join или через join #
+    @JoinColumn(name = "company_id")    <- обозначает ту колонку которая является внешним ключом из текущей сущности, по умолчанию берётся название сущности и добавляется _id (т.е. работать будет и без указания JoinColumn). SQL не чувствителен к регистру и Company_id == company_id
+    private Company company;
+
+
+}
+
+
+@Entity
+public class Company {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String name;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)    orphanRemoval = true - означает что если сущность удалить из коллекции(не из базы, а коллекции) то сущность удалится из БД по окочании транзацкии
+    private List<User> users
+
+    Нужно быть аккуратным в части если внутри пользователя над полем 'Company' установлена аннотация cascade = CascadeType.ALL
+    то при удалении пользователя из коллекции, пользователь удалится из БД. удалится компания и удалятся все пользователи компании
+
+}
