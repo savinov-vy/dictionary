@@ -117,3 +117,20 @@ fetch только добавляет колонки из таблиц в рез
 @FetchProfile вытянуть отдельные поля @ManyToOne или коллекции @ManyToMany с использованием getById() для HQL
 и QueryDsl работать не будет
 -------------------------------------------
+@EntityGraphs можно использовать по аналогии с eclipse link
+работает и для getById и в HQL
+создаются subGraphs и NamedEntityGraph с аттрибутами,к которые нужно вытянуть .
+аннотациями пользоваться очень объемно поэтому можно пользоваться программно
+var userGraph = session.createEntityGraph(User.class); <- создать графф
+userGraph.addAttributeNodes("company", "userChats"); <- добавить вытягиваемые поля и сабграфы которые нужно вытянуть
+var userChatsSubgraph = userGraph.addSubgraph("userChats", UserChat.class) <- создать сабграф и имя "userChats"
+userChatsSubgraph.addAttributeNodes("chat"); <- добавить в сабграф вытягиваемые поля
+
+теперь передаём в запросы
+Map<String, Object> properties = Map.of(GraphSemantic.LOAD.getJpaHintName(), userGraph);
+
+var user = session.find(User.class, 1L, properties); <-- getById() работать не будет только findById()
+
+var users = session.createQuery("select u from User u " + "where 1 = 1", User.class)
+            .setHint(GraphSemantic.LOAD.getJpaHintName(), userGraph)
+            .list();
