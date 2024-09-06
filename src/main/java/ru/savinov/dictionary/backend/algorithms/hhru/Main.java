@@ -15,43 +15,47 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    Set<Integer> isChecked = new HashSet<>();
-    int[] valueByIndex;
-    Map<Integer, Set<Integer>> indexesByValue = new HashMap<>();
-    BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(30000);
-    BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(30000);
-    volatile boolean isFounded = false;
+    static Set<Integer> isChecked = new HashSet<>();
+    static int[] valueByIndex;
+    static Map<Integer, Set<Integer>> indexesByValue = new HashMap<>();
+    static  BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(30000);
+    static BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(30000);
+    static ExecutorService executorService;
+    volatile static boolean isFounded = false;
 
     public static void main(String[] args) throws InterruptedException {
+        long start = System.currentTimeMillis();
         Scanner in = new Scanner(System.in);
         String line = in.nextLine();
 
         String[] s = line.split(" ");
-        Main main = new Main();
 
-        int[] valueByIndex = Arrays.stream(s)
+        valueByIndex = Arrays.stream(s)
                 .mapToInt(Integer::valueOf)
                 .toArray();
-        main.setValueByIndex(valueByIndex);
-        main.fillIndexesByValue(valueByIndex);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        fillIndexesByValue(valueByIndex);
 
-        executorService.submit(main::fillIslandsQueue);
-        executorService.submit(main::foundedTarget);
+        int availableProcessors = Runtime.getRuntime().availableProcessors();
+        System.out.println(availableProcessors);
+        executorService = Executors.newFixedThreadPool(availableProcessors);
 
-        if (executorService.awaitTermination(950, TimeUnit.MILLISECONDS)) {
-        } else {
+        executorService.submit(Main::fillIslandsQueue);
+        executorService.submit(Main::foundedTarget);
+
+        if (!executorService.awaitTermination(940, TimeUnit.MILLISECONDS)) {
             executorService.shutdownNow();
+            isFounded = true;
         }
-
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
 
     public void setValueByIndex(int[] valueByIndex) {
         this.valueByIndex = valueByIndex;
     }
 
-    private void fillIslandsQueue() {
+    private static void fillIslandsQueue() {
         try {
             Island current = new Island(valueByIndex[0], 0, 0);
             neighboursQueue.add(current);
@@ -69,12 +73,12 @@ public class Main {
                 }
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            isFounded = true;
         }
     }
 
 
-    private Set<Island> getNeighboursIslands(Island island) {
+    private static Set<Island> getNeighboursIslands(Island island) {
 
         int i = island.getIndex();
         int value = island.getValue();
@@ -104,7 +108,7 @@ public class Main {
                 .collect(Collectors.toSet());
     }
 
-    private void foundedTarget() {
+    private static void foundedTarget() {
         try {
             int targetIndex = valueByIndex.length - 1;
             while (!isFounded) {
@@ -116,11 +120,11 @@ public class Main {
                 }
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            isFounded = true;
         }
     }
 
-    private void fillIndexesByValue(int[] s) {
+    private static void fillIndexesByValue(int[] s) {
         for (int i = 0; i < s.length; i++) {
             int current = s[i];
             if (!indexesByValue.containsKey(current)) {
@@ -134,7 +138,7 @@ public class Main {
         }
     }
 
-    class Island {
+    static class Island {
         private final int value;
         private final int index;
         private Integer level;
