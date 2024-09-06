@@ -1,9 +1,6 @@
 package ru.savinov.dictionary.backend.algorithms.hhru;
 
-import ru.savinov.dictionary.backend.algorithms.hhru.max_area.Data;
-
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,6 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -20,8 +18,8 @@ public class Main {
     Set<Integer> isChecked = new HashSet<>();
     int[] valueByIndex;
     Map<Integer, Set<Integer>> indexesByValue = new HashMap<>();
-    BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(10000);
-    BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(10000);
+    BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(30000);
+    BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(30000);
     volatile boolean isFounded = false;
 
     public static void main(String[] args) throws InterruptedException {
@@ -42,7 +40,11 @@ public class Main {
         executorService.submit(main::fillIslandsQueue);
         executorService.submit(main::foundedTarget);
 
-        executorService.shutdown();
+        if (executorService.awaitTermination(950, TimeUnit.MILLISECONDS)) {
+        } else {
+            executorService.shutdownNow();
+        }
+
     }
 
     public void setValueByIndex(int[] valueByIndex) {
@@ -56,7 +58,6 @@ public class Main {
             toFindQueue.add(current);
             isChecked.add(current.getIndex());
             while (!isFounded) {
-                System.out.println("Memory 1: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())) / 1048576); //!!!!!!!!!
                 Island island = neighboursQueue.take();
                 Set<Island> neighboursIslands = getNeighboursIslands(island);
                 for (Island neighbor : neighboursIslands) {
@@ -74,7 +75,6 @@ public class Main {
 
 
     private Set<Island> getNeighboursIslands(Island island) {
-        System.out.println("Memory 2: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())) / 1048576); //!!!!!!!!!
 
         int i = island.getIndex();
         int value = island.getValue();
@@ -99,7 +99,6 @@ public class Main {
             Set<Integer> indexes = indexesByValue.get(value);
             neighbours.addAll(indexes);
         }
-        System.out.println("Memory 3: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())) / 1048576); //!!!!!!!!!
         return neighbours.stream()
                 .map(n -> new Island(valueByIndex[n], n, island.getLevel() + 1))
                 .collect(Collectors.toSet());
@@ -110,7 +109,6 @@ public class Main {
             int targetIndex = valueByIndex.length - 1;
             while (!isFounded) {
                 Island current = toFindQueue.take();
-                System.out.println("Memory 4: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())) / 1048576); //!!!!!!!!!
                 if (current.getIndex() == targetIndex) {
                     System.out.println(current.getLevel());
                     isFounded = true;
