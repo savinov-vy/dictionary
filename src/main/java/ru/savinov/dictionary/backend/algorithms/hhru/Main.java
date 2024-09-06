@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -15,18 +16,19 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    static Set<Integer> isChecked = new HashSet<>();
-    static int[] valueByIndex;
-    static Map<Integer, Set<Integer>> indexesByValue = new HashMap<>();
-    static  BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(30000);
-    static BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(30000);
+    static volatile Set<Integer> isChecked = new HashSet<>();
+    static volatile int[] valueByIndex;
+    static Map<Integer, Set<Integer>> indexesByValue = new ConcurrentHashMap<>();
+    static volatile BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(10);
+    static volatile BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(10);
     static ExecutorService executorService;
     volatile static boolean isFounded = false;
 
     public static void main(String[] args) throws InterruptedException {
         long start = System.currentTimeMillis();
         Scanner in = new Scanner(System.in);
-        String line = in.nextLine();
+//        String line = in.nextLine();
+        String line = "0 1 2 3 4 5 60 1 2 3 4 5 6";
 
         String[] s = line.split(" ");
 
@@ -37,11 +39,13 @@ public class Main {
         fillIndexesByValue(valueByIndex);
 
         int availableProcessors = Runtime.getRuntime().availableProcessors();
-        System.out.println(availableProcessors);
         executorService = Executors.newFixedThreadPool(availableProcessors);
+        Main main = new Main();
 
-        executorService.submit(Main::fillIslandsQueue);
-        executorService.submit(Main::foundedTarget);
+
+        executorService.submit(main::fillIslandsQueue);
+        executorService.submit(main::foundedTarget);
+
 
         if (!executorService.awaitTermination(940, TimeUnit.MILLISECONDS)) {
             executorService.shutdownNow();
@@ -51,11 +55,7 @@ public class Main {
         System.out.println(end - start);
     }
 
-    public void setValueByIndex(int[] valueByIndex) {
-        this.valueByIndex = valueByIndex;
-    }
-
-    private static void fillIslandsQueue() {
+    private void fillIslandsQueue() {
         try {
             Island current = new Island(valueByIndex[0], 0, 0);
             neighboursQueue.add(current);
@@ -73,12 +73,15 @@ public class Main {
                 }
             }
         } catch (InterruptedException e) {
-            isFounded = true;
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+            }
         }
     }
 
 
-    private static Set<Island> getNeighboursIslands(Island island) {
+    private Set<Island> getNeighboursIslands(Island island) {
 
         int i = island.getIndex();
         int value = island.getValue();
@@ -108,7 +111,7 @@ public class Main {
                 .collect(Collectors.toSet());
     }
 
-    private static void foundedTarget() {
+    private void foundedTarget() {
         try {
             int targetIndex = valueByIndex.length - 1;
             while (!isFounded) {
@@ -120,7 +123,10 @@ public class Main {
                 }
             }
         } catch (InterruptedException e) {
-            isFounded = true;
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+            }
         }
     }
 
@@ -138,10 +144,10 @@ public class Main {
         }
     }
 
-    static class Island {
+    class Island {
         private final int value;
         private final int index;
-        private Integer level;
+        private int level;
 
         public Island(int value, int index, int level) {
             this.value = value;
@@ -149,7 +155,7 @@ public class Main {
             this.level = level;
         }
 
-        public Integer getLevel() {
+        public int getLevel() {
             return level;
         }
 
