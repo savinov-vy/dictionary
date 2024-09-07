@@ -1,7 +1,8 @@
 package ru.savinov.dictionary.backend.algorithms.hhru;
 
+import ru.savinov.dictionary.backend.algorithms.hhru.max_area.Data;
+
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -12,23 +13,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class Main {
 
     static volatile Set<Integer> isChecked = new HashSet<>();
     static volatile int[] valueByIndex;
     static Map<Integer, Set<Integer>> indexesByValue = new ConcurrentHashMap<>();
-    static volatile BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(10);
-    static volatile BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(10);
-    static ExecutorService executorService;
+    static volatile BlockingQueue<Island> toFindQueue = new ArrayBlockingQueue<>(1000);
+    static volatile BlockingQueue<Island> neighboursQueue = new ArrayBlockingQueue<>(1000);
+    static ExecutorService executorServiceProducer;
+    static ExecutorService executorServiceConsumer;
     volatile static boolean isFounded = false;
 
     public static void main(String[] args) throws InterruptedException {
         long start = System.currentTimeMillis();
         Scanner in = new Scanner(System.in);
 //        String line = in.nextLine();
-        String line = "0 1 2 3 4 5 60 1 2 3 4 5 6";
+        String line = Data.data1 + " " + Data.data2 + " " + Data.data3;
 
         String[] s = line.split(" ");
 
@@ -38,20 +39,22 @@ public class Main {
 
         fillIndexesByValue(valueByIndex);
 
-        int availableProcessors = Runtime.getRuntime().availableProcessors();
-        executorService = Executors.newFixedThreadPool(availableProcessors);
+        int availableProcessors1 = Runtime.getRuntime().availableProcessors() / 2;
+        executorServiceProducer = Executors.newFixedThreadPool(availableProcessors1);
+        int availableProcessors2 = Runtime.getRuntime().availableProcessors() / 2;
+        executorServiceConsumer = Executors.newFixedThreadPool(availableProcessors2);
+
         Main main = new Main();
 
+        executorServiceProducer.submit(main::fillIslandsQueue);
+        executorServiceConsumer.submit(main::foundedTarget);
 
-        executorService.submit(main::fillIslandsQueue);
-        executorService.submit(main::foundedTarget);
-
-
-        if (!executorService.awaitTermination(940, TimeUnit.MILLISECONDS)) {
-            executorService.shutdownNow();
-            isFounded = true;
+        long end = 0;
+        if (!executorServiceConsumer.awaitTermination(900, TimeUnit.MILLISECONDS)) {
+            executorServiceProducer.shutdownNow();
+            executorServiceConsumer.shutdownNow();
+            end = System.currentTimeMillis();
         }
-        long end = System.currentTimeMillis();
         System.out.println(end - start);
     }
 
@@ -63,18 +66,20 @@ public class Main {
             isChecked.add(current.getIndex());
             while (!isFounded) {
                 Island island = neighboursQueue.take();
-                Set<Island> neighboursIslands = getNeighboursIslands(island);
-                for (Island neighbor : neighboursIslands) {
-                    if (!isChecked.contains(neighbor.getIndex())) {
-                        neighboursQueue.put(neighbor);
-                        toFindQueue.put(neighbor);
-                        isChecked.add(neighbor.getIndex());
+                if (island != null) {
+                    Set<Island> neighboursIslands = getNeighboursIslands(island);
+                    for (Island neighbor : neighboursIslands) {
+                        if (!isChecked.contains(neighbor.getIndex())) {
+                            neighboursQueue.put(neighbor);
+                            toFindQueue.put(neighbor);
+                            isChecked.add(neighbor.getIndex());
+                        }
                     }
                 }
             }
         } catch (InterruptedException e) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(2);
             } catch (InterruptedException ex) {
             }
         }
@@ -106,9 +111,14 @@ public class Main {
             Set<Integer> indexes = indexesByValue.get(value);
             neighbours.addAll(indexes);
         }
-        return neighbours.stream()
-                .map(n -> new Island(valueByIndex[n], n, island.getLevel() + 1))
-                .collect(Collectors.toSet());
+        Set<Island> islands = new HashSet<>();
+        for (Integer n : neighbours) {
+            if (isChecked.contains(n)) {
+                continue;
+            }
+            islands.add(new Island(valueByIndex[n], n, island.getLevel() + 1));
+        }
+        return islands;
     }
 
     private void foundedTarget() {
@@ -124,7 +134,7 @@ public class Main {
             }
         } catch (InterruptedException e) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(2);
             } catch (InterruptedException ex) {
             }
         }
