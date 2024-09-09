@@ -5,12 +5,12 @@ import ru.savinov.dictionary.backend.algorithms.hhru.max_area.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,16 +19,18 @@ public class Main {
     static Set<Integer> isChecked = new HashSet<>();
     static int[] valueByIndex;
     static Map<Integer, List<Integer>> indexesByValue = new HashMap<>();
-    static Queue<Island> neighboursQueue = new LinkedList<>();
+    static BlockingQueue<Island> checkedQueue = new ArrayBlockingQueue<>(10000, true);
+    static BlockingQueue<Island> toCheckQueue = new ArrayBlockingQueue<>(10000, true);
     static ExecutorService executorServiceProducer;
-    static boolean isFounded = false;
+    static ExecutorService executorServiceConsumer;
+    static volatile boolean isFounded = false;
     static int targetIndex;
-    static long start;
+//    static long start;
 
     public static void main(String[] args) throws InterruptedException {
-        start = System.currentTimeMillis();
+//        start = System.currentTimeMillis();
         Scanner in = new Scanner(System.in);
-        String line = Data.allDifferent; //in.nextLine();
+        String line = Data.testAllSame_plus; //in.nextLine();
         String[] numbers = line.split(" ");
 
         valueByIndex = new int[numbers.length];
@@ -47,83 +49,82 @@ public class Main {
 
         targetIndex = valueByIndex.length - 1;
 
-        int availableProcessors = Runtime.getRuntime().availableProcessors();
-        executorServiceProducer = Executors.newFixedThreadPool(availableProcessors);
+        executorServiceProducer = Executors.newSingleThreadExecutor();
+        executorServiceConsumer = Executors.newSingleThreadExecutor();
 
         Main main = new Main();
 
         main.fillIndexesByValue();
-        executorServiceProducer.submit(main::foundTarget);
+
+        if (indexesByValue.size() == 1) {
+            System.out.println(1);
+            return;
+        }
+        executorServiceProducer.execute(main::putToQueueOnCheck);
+        executorServiceConsumer.execute(main::checkIsland);
         executorServiceProducer.shutdown();
+        executorServiceConsumer.shutdown();
     }
 
-    private void foundTarget() {
-            Island current = new Island(valueByIndex[0], 0, 0);
-            neighboursQueue.add(current);
-            isChecked.add(current.getIndex());
+    private void putToQueueOnCheck() {
+        checkedQueue.add(new Island(0, 0));
+        isChecked.add(0);
+        try {
             while (!isFounded) {
-                Island island = neighboursQueue.poll();
-                List<Island> neighboursIslands = getNeighboursIslands(island);
-                for (Island neighbor : neighboursIslands) {
-                    if (!isChecked.contains(neighbor.getIndex())) {
-                        neighboursQueue.add(neighbor);
-                        isChecked.add(neighbor.getIndex());
+                Island island = checkedQueue.take();
+                Set<Integer> neighboursIslands = getNeighboursIslandIndexes(island.getIndex());
+                for (Integer neighborIndex : neighboursIslands) {
+                    if (!isChecked.contains(neighborIndex)) {
+                        Island neighbor = new Island(neighborIndex, island.getLevel() + 1);
+                        toCheckQueue.put(neighbor);
                     }
                 }
+                isChecked.addAll(neighboursIslands);
             }
+        } catch (InterruptedException e) {
+        }
     }
 
-    private List<Island> getNeighboursIslands(Island island) {
+    private synchronized void checkIsland() {
+        try {
+            while (!isFounded) {
+                Island island = toCheckQueue.take();
+                int currentIndex = island.getIndex();
+                if (currentIndex == targetIndex) {
+                    System.out.println(island.getLevel());
+                    isFounded = true;
+                    executorServiceProducer.shutdownNow();
+                    executorServiceConsumer.shutdownNow();
+//                    System.out.println(System.currentTimeMillis() - start);
+                }
+                checkedQueue.put(island);
+            }
+        } catch (
+                InterruptedException e) {
+        }
+    }
 
-        int i = island.getIndex();
-        int value = island.getValue();
-        List<Integer> neighbours = new ArrayList<>();
-        if (i > 0 && i < valueByIndex.length - 1) {
-            int onLeft = i - 1;
-            int onRight = i + 1;
+    private Set<Integer> getNeighboursIslandIndexes(int index) {
+        Set<Integer> neighbours = new HashSet<>();
+        if (index > 0 && index < valueByIndex.length - 1) {
+            int onLeft = index - 1;
+            int onRight = index + 1;
             neighbours.add(onLeft);
             neighbours.add(onRight);
-            List<Integer> indexes = indexesByValue.get(value);
+            List<Integer> indexes = indexesByValue.get(valueByIndex[index]);
             neighbours.addAll(indexes);
-        } else if (i == 0) {
-            if (valueByIndex.length > 1) {
-                int onRight = i + 1;
-                neighbours.add(onRight);
-            }
-            List<Integer> indexes = indexesByValue.get(value);
+        } else if (index == 0) {
+            int onRight = index + 1;
+            neighbours.add(onRight);
+            List<Integer> indexes = indexesByValue.get(valueByIndex[index]);
             neighbours.addAll(indexes);
-        } else if (i == valueByIndex.length - 1) {
-            int onLeft = i - 1;
+        } else if (index == valueByIndex.length - 1) {
+            int onLeft = index - 1;
             neighbours.add(onLeft);
-            List<Integer> indexes = indexesByValue.get(value);
+            List<Integer> indexes = indexesByValue.get(valueByIndex[index]);
             neighbours.addAll(indexes);
         }
-        List<Island> islands = new ArrayList<>();
-        for (Integer indexNeighbour : neighbours) {
-            if (isChecked.contains(indexNeighbour)) {
-                continue;
-            }
-            int currentLevel = island.getLevel();
-            boolean check = check(currentLevel, indexNeighbour);
-            if (check) {
-                break;
-            }
-            islands.add(new Island(valueByIndex[indexNeighbour], indexNeighbour, currentLevel + 1));
-            System.out.println("Memory 2: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())) / 1048576); //!!!!!!!!!
-        }
-        return islands;
-    }
-
-    private boolean check(int currentLevel, int indexNeighbour) {
-        if (!isChecked.contains(indexNeighbour)) {
-            if (indexNeighbour == targetIndex) {
-                System.out.println(currentLevel + 1);
-                isFounded = true;
-                executorServiceProducer.shutdownNow();
-                System.out.println(System.currentTimeMillis() - start);
-            }
-        }
-        return isFounded;
+        return neighbours;
     }
 
     private void fillIndexesByValue() {
@@ -141,22 +142,16 @@ public class Main {
     }
 
     class Island {
-        private final int value;
         private final int index;
         private final int level;
 
-        public Island(int value, int index, int level) {
-            this.value = value;
+        public Island(int index, int level) {
             this.index = index;
             this.level = level;
         }
 
         public int getLevel() {
             return level;
-        }
-
-        public int getValue() {
-            return value;
         }
 
         public int getIndex() {
