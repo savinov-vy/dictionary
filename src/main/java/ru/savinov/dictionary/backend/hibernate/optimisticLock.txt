@@ -1,0 +1,2 @@
+блокировка с помощью поля version на уровне приложения
+решает проблему last commit wins (NON repeatable read)

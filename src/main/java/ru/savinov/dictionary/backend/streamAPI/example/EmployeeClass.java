@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.backend.streamAPI.employee;
+package ru.savinov.dictionary.backend.streamAPI.example;
 
 import java.util.ArrayList;
 import java.util.Arrays;

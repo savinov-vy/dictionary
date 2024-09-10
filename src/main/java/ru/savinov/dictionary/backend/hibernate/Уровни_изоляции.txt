@@ -1,7 +1,11 @@
 ISOLATION
 Уровни изоляции:
+hibernate.collection.isolation=1 read uncomited
+hibernate.collection.isolation=2 read commited
+hibernate.collection.isolation=4 repeatable
+hibernate.collection.isolation=8 serializable
                     phantom read       non repeatable read     dirty read      lost update
-SERIALIASIBLE           +                       +                   +               +
+SERIALIZABLE            +                       +                   +               +
 REPEATABLE READ         -                       +                   +               +
 READ COMMITED           -                       -                   +               +
 READ UNCOMMITED         -                       -                   -               +
