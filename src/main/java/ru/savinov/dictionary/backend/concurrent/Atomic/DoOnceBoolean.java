@@ -2,7 +2,7 @@ package ru.savinov.dictionary.backend.concurrent.Atomic;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class DoOnceBoolean {
+public class DoOnceBoolean implements IOnceDoer {
     AtomicBoolean flag = new AtomicBoolean(false);
 
     /**
@@ -11,7 +11,7 @@ public class DoOnceBoolean {
      * compareAndSet имеет особую инструкцию для процессора для увеличения скорости работы
      * @param action
      */
-    void doOnce(Runnable action) {
+    public void doOnce(Runnable action) {
         if (flag.compareAndSet(false, true)) {
             action.run();
         }
