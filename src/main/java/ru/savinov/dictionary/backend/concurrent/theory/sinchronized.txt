@@ -1,0 +1,10 @@
+
+Это ошибка так делать нельзя:
+public class Container {
+    private static final List<String> list = new ArrayList<>();
+    synchronized void addEntry(String s) {
+         list.add(s);
+    }
+}
+Потому как list статический - значит принадлежит классу. А synchronized метод это ситаксический сахар синхронизация
+на текущем объекте. В итоге разные потоки будут иметь доступ к list.

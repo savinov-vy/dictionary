@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.backend.theoryCore.concurrent;
+package ru.savinov.dictionary.backend.concurrent;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

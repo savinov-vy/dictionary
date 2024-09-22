@@ -1,4 +1,4 @@
-package ru.savinov.dictionary.backend.theoryCore.concarrency.Atomic_VS_Sinchronize;
+package ru.savinov.dictionary.backend.concurrent.Atomic_VS_Sinchronize;
 
 public class SequenceGeneratorSynchronized implements Generatorable {
     private int number;
