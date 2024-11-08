@@ -14,14 +14,27 @@ public class Data {
     public static String allDifferent = data1 + data2 + data3 + data4 + data5 + data6;
     public static String testAllSame = allSame();
     public static String testAllSame_plus = allSame() + " 50001";
+    public static String testAllSameShort_plus = allSameShort() + " 50001";
     public static String testOutput_0 = "11";
     public static String testOutput_1 = "3 2 5 2 5 2 5 3";
     public static String testOutput_2 = "3 5 2 2 5";
     public static String testOutput_3 = "11 -86 -86 201 11 86 86 86 3 201";
 
 
+    public static void main(String[] args) {
 
-    private static String allSame(){
+        String s1 = new String("a");
+        String s2 = new String("a");
+
+        String a = "a123";
+        String b = "a";
+        String c = b + 123;
+        c = c.intern();
+
+        System.out.println(a == c);
+    }
+
+    private static String allSame() {
         int[] i = new int[50000];
         Arrays.fill(i, 1);
         return Arrays.stream(i)
@@ -29,11 +42,19 @@ public class Data {
                 .collect(Collectors.joining(" "));
     }
 
-    public static void main(String[] args) {
-                String valueByIndex = IntStream.range(50000, 59000)
-                        .mapToObj(String::valueOf)
+    private static String allSameShort() {
+        int[] i = new int[4];
+        Arrays.fill(i, 1);
+        return Arrays.stream(i)
+                .mapToObj(String::valueOf)
                 .collect(Collectors.joining(" "));
-        System.out.println(valueByIndex);
     }
+
+//    public static void main(String[] args) {
+//                String valueByIndex = IntStream.range(50000, 59000)
+//                        .mapToObj(String::valueOf)
+//                .collect(Collectors.joining(" "));
+//        System.out.println(valueByIndex);
+//    }
 }
 
